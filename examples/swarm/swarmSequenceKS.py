@@ -65,8 +65,8 @@ URI9 = 'radio://0/80/2M/E7E7E7E70B'
 URI10 = 'radio://0/80/2M/E7E7E7E70C'
 
 
-z0 = 0.4
-z = 1.5
+z0 = 1
+z = 2
 
 x0 = 3.5
 x1 = 2.5
@@ -77,68 +77,210 @@ y1 = 2.5
 y2 = 3.5
 y3 = 4.5
 
-lowTime = 3.0
-highTime = 10.0
+takeoffIncrementTime = 0.5
+quickIncrementTime = 1.0
+middleIncrementTime = 3.0
+longIncrementTime = 5.0
 
 #    x   y   z  time
 sequence1 = [
-    (x0, y0, z0, lowTime),
-    (x0, y0, z, highTime),
-    (x0, y0, z0, lowTime),
+    #Takeoff
+    (x0, y0, z0/2, takeoffIncrementTime),
+    (x0, y0, z0, takeoffIncrementTime),
+    (x0, y0, z, middleIncrementTime),
+    #Sqaure
+    (x0, y0-1, z, middleIncrementTime),
+    (x0-1, y0-1, z, middleIncrementTime),
+    (x0-1, y0, z, middleIncrementTime),
+    (x0, y0, z, longIncrementTime),
+    #Pyramid
+    (x0+.5, y0-.5, z-.5, quickIncrementTime),
+    (x0+1, y0-1, z-1, longIncrementTime),  
+    #Normal
+    (x0, y0, z, middleIncrementTime),
+    #Landing
+    (x0, y0, z0, middleIncrementTime),
+    (x0, y0, z0/2, quickIncrementTime),
 ]
 
 sequence2 = [
-    (x0, y1, z0, lowTime),
-    (x0, y1, z, highTime),
-    (x0, y1, z0, lowTime),
+    #Takeoff
+    (x0, y1, z0/2, takeoffIncrementTime),
+    (x0, y1, z0, takeoffIncrementTime),
+    (x0, y1, z, middleIncrementTime),
+    #Sqaure
+    (x0, y1-1, z, middleIncrementTime),
+    (x0-1, y1-1, z, middleIncrementTime),
+    (x0-1, y1, z, middleIncrementTime),
+    (x0, y1, z, longIncrementTime),
+    #Pyramid
+    (x0, y1, z, quickIncrementTime),
+    (x0, y1, z, longIncrementTime),
+    #Normal
+    (x0, y1, z, middleIncrementTime),
+    #Landing
+    (x0, y1, z0, middleIncrementTime),
+    (x0, y1, z0/2, quickIncrementTime),
 ]
 
 sequence3 = [
-    (x0, y2, z0, lowTime),
-    (x0, y2, z, highTime),
-    (x0, y2, z0, lowTime),
+    #Takeoff
+    (x0, y2, z0/2, takeoffIncrementTime),
+    (x0, y2, z0, takeoffIncrementTime),
+    (x0, y2, z, middleIncrementTime),
+    #Sqaure
+    (x0, y2-1, z, middleIncrementTime),
+    (x0-1, y2-1, z, middleIncrementTime),
+    (x0-1, y2, z, middleIncrementTime),
+    (x0, y2, z, longIncrementTime),
+    #Pyramid
+    (x0, y2, z, quickIncrementTime),
+    (x0, y2, z, longIncrementTime),
+    #Normal
+    (x0, y2, z, middleIncrementTime),
+    #Landing
+    (x0, y2, z0, middleIncrementTime),
+    (x0, y2, z0/2, quickIncrementTime),
 ]
 
 sequence4 = [
-    (x0, y3, z0, lowTime),
-    (x0, y3, z, highTime),
-    (x0, y3, z0, lowTime),
+    #Takeoff
+    (x0, y3, z0/2, takeoffIncrementTime),
+    (x0, y3, z0, takeoffIncrementTime),
+    (x0, y3, z, middleIncrementTime),
+    #Sqaure
+    (x0, y3-1, z, middleIncrementTime),
+    (x0-1, y3-1, z, middleIncrementTime),
+    (x0-1, y3, z, middleIncrementTime),
+    (x0, y3, z, longIncrementTime),
+    #Pyramid
+    (x0+.5, y3+.5, z-.5, quickIncrementTime),
+    (x0+1, y3+1, z-1, longIncrementTime),
+    #Normal
+    (x0, y3, z, middleIncrementTime),
+    #Landing
+    (x0, y3, z0, middleIncrementTime),
+    (x0, y3, z0/2, quickIncrementTime),
 ]
 
 sequence5 = [
-    (x1, y1, z0, lowTime),
-    (x1, y1, z, highTime),
-    (x1, y1, z0, lowTime),
+    #Takeoff
+    (x1, y1, z0/2, takeoffIncrementTime),
+    (x1, y1, z0, takeoffIncrementTime),
+    (x1, y1, z, middleIncrementTime),
+    #Sqaure
+    (x1, y1-1, z, middleIncrementTime),
+    (x1-1, y1-1, z, middleIncrementTime),
+    (x1-1, y1, z, middleIncrementTime),
+    (x1, y1, z, longIncrementTime),
+    #Pyramid
+    (x1, y1, z+.5, quickIncrementTime),
+    (x1, y1, z+1, longIncrementTime),
+    #Normal
+    (x1, y1, z, middleIncrementTime),
+    #Landing
+    (x1, y1, z0, middleIncrementTime),
+    (x1, y1, z0/2, quickIncrementTime),
 ]
 
 sequence6 = [
-    (x1, y2, z0, lowTime),
-    (x1, y2, z, highTime),
-    (x1, y2, z0, lowTime),
+    #Takeoff
+    (x1, y2, z0/2, takeoffIncrementTime),
+    (x1, y2, z0, takeoffIncrementTime),
+    (x1, y2, z, middleIncrementTime),
+    #Sqaure
+    (x1, y2-1, z, middleIncrementTime),
+    (x1-1, y2-1, z, middleIncrementTime),
+    (x1-1, y2, z, middleIncrementTime),
+    (x1, y2, z, longIncrementTime),
+    #Pyramid
+    (x1, y2, z+.5, quickIncrementTime),
+    (x1, y2, z+1, longIncrementTime),
+    #Normal
+    (x1, y2, z, middleIncrementTime),
+    #Landing
+    (x1, y2, z0, middleIncrementTime),
+    (x1, y2, z0/2, quickIncrementTime),
 ]
 
 sequence7 = [
-    (x2, y0, z0, lowTime),
-    (x2, y0, z, highTime),
-    (x2, y0, z0, lowTime),
+    #Takeoff
+    (x2, y0, z0/2, takeoffIncrementTime),
+    (x2, y0, z0, takeoffIncrementTime),
+    (x2, y0, z, middleIncrementTime),
+    #Sqaure
+    (x2, y0-1, z, middleIncrementTime),
+    (x2-1, y0-1, z, middleIncrementTime),
+    (x2-1, y0, z, middleIncrementTime),
+    (x2, y0, z, longIncrementTime),
+    #Pyramid
+    (x2-.5, y0-.5, z-.5, quickIncrementTime),
+    (x2-1, y0-1, z-1, longIncrementTime),
+    #Normal
+    (x2, y0, z, middleIncrementTime),
+    #Landing
+    (x2, y0, z0, middleIncrementTime),
+    (x2, y0, z0/2, quickIncrementTime),
 ]
 
 sequence8 = [
-    (x2, y1, z0, lowTime),
-    (x2, y1, z, highTime),
-    (x2, y1, z0, lowTime),
+    #Takeoff
+    (x2, y1, z0/2, takeoffIncrementTime),
+    (x2, y1, z0, takeoffIncrementTime),
+    (x2, y1, z, middleIncrementTime),
+    #Sqaure
+    (x2, y1-1, z, middleIncrementTime),
+    (x2-1, y1-1, z, middleIncrementTime),
+    (x2-1, y1, z, middleIncrementTime),
+    (x2, y1, z, longIncrementTime),
+    #Pyramid
+    (x2, y1, z, quickIncrementTime),
+    (x2, y1, z, longIncrementTime),
+    #Normal
+    (x2, y1, z, middleIncrementTime),
+    #Landing
+    (x2, y1, z0, middleIncrementTime),
+    (x2, y1, z0/2, quickIncrementTime),
 ]
 
 sequence9 = [
-    (x2, y2, z0, lowTime),
-    (x2, y2, z, highTime),
-    (x2, y2, z0, lowTime),
+    #Takeoff
+    (x2, y2, z0/2, takeoffIncrementTime),
+    (x2, y2, z0, takeoffIncrementTime),
+    (x2, y2, z, middleIncrementTime),
+    #Sqaure
+    (x2, y2-1, z, middleIncrementTime),
+    (x2-1, y2-1, z, middleIncrementTime),
+    (x2-1, y2, z, middleIncrementTime),
+    (x2, y2, z, longIncrementTime),
+    #Pyramid
+    (x2, y2, z, quickIncrementTime),
+    (x2, y2, z, longIncrementTime),
+    #Normal
+    (x2, y2, z, middleIncrementTime),
+    #Landing
+    (x2, y2, z0, middleIncrementTime),
+    (x2, y2, z0/2, quickIncrementTime),
 ]
 
 sequence10 = [
-    (x2, y3, z0, lowTime),
-    (x2, y3, z, highTime),
-    (x2, y3, z0, lowTime),
+    #Takeoff
+    (x2, y3, z0/2, takeoffIncrementTime),
+    (x2, y3, z0, takeoffIncrementTime),
+    (x2, y3, z, middleIncrementTime),
+    #Sqaure
+    (x2, y3-1, z, middleIncrementTime),
+    (x2-1, y3-1, z, middleIncrementTime),
+    (x2-1, y3, z, middleIncrementTime),
+    (x2, y3, z, longIncrementTime),
+    #Pyramid
+    (x2-.5, y3+.5, z-.5, quickIncrementTime),
+    (x2-1, y3+1, z-1, longIncrementTime),
+    #Normal
+    (x2, y3, z, middleIncrementTime),
+    #Landing
+    (x2, y3, z0, middleIncrementTime),
+    (x2, y3, z0/2, quickIncrementTime),
 ]
 
 seq_args = {
