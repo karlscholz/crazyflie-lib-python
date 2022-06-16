@@ -37,7 +37,7 @@ y3  10              4
             |
 y2  9       6       3
             |
-            +------> X
+[ich]       +------> X
 
 y1  8       5       2
 
@@ -54,21 +54,19 @@ from cflib.crazyflie.swarm import Swarm
 
 # Change uris and sequences according to your setup
 URI1 = 'radio://0/80/2M/E7E7E7E701'
-URI2 = 'radio://0/80/2M/E7E7E7E702'
-URI3 = 'radio://0/80/2M/E7E7E7E703'
-URI4 = 'radio://0/80/2M/E7E7E7E704'
-#URI5 = 'radio://0/80/2M/E7E7E7E705'
-#URI6 = 'radio://0/80/2M/E7E7E7E706'
-URI5 = 'radio://0/80/2M/E7E7E7E709'#
-URI6 = 'radio://0/80/2M/E7E7E7E70C'#
-URI7 = 'radio://0/80/2M/E7E7E7E707'
-URI8 = 'radio://0/80/2M/E7E7E7E708'
-URI9 = 'radio://0/80/2M/E7E7E7E709'
-URI10 = 'radio://0/80/2M/E7E7E7E70A'
+URI2 = 'radio://0/80/2M/E7E7E7E703'
+URI3 = 'radio://0/80/2M/E7E7E7E704'
+URI4 = 'radio://0/80/2M/E7E7E7E705'
+URI5 = 'radio://0/80/2M/E7E7E7E706'
+URI6 = 'radio://0/80/2M/E7E7E7E708'
+URI7 = 'radio://0/80/2M/E7E7E7E709'
+URI8 = 'radio://0/80/2M/E7E7E7E70A'
+URI9 = 'radio://0/80/2M/E7E7E7E70B'
+URI10 = 'radio://0/80/2M/E7E7E7E70C'
 
 
 z0 = 0.4
-z = 1.0
+z = 1.5
 
 x0 = 3.5
 x1 = 2.5
@@ -79,65 +77,68 @@ y1 = 2.5
 y2 = 3.5
 y3 = 4.5
 
+lowTime = 3.0
+highTime = 10.0
+
 #    x   y   z  time
 sequence1 = [
-    (x0, y0, z0, 3.0),
-    (x0, y0, z, 30.0),
-    (x0, y0, z0, 3.0),
+    (x0, y0, z0, lowTime),
+    (x0, y0, z, highTime),
+    (x0, y0, z0, lowTime),
 ]
 
 sequence2 = [
-    (x0, y1, z0, 3.0),
-    (x0, y1, z, 30.0),
-    (x0, y1, z0, 3.0),
+    (x0, y1, z0, lowTime),
+    (x0, y1, z, highTime),
+    (x0, y1, z0, lowTime),
 ]
 
 sequence3 = [
-    (x0, y2, z0, 3.0),
-    (x0, y2, z, 30.0),
-    (x0, y2, z0, 3.0),
+    (x0, y2, z0, lowTime),
+    (x0, y2, z, highTime),
+    (x0, y2, z0, lowTime),
 ]
 
 sequence4 = [
-    (x0, y3, z0, 3.0),
-    (x0, y3, z, 30.0),
-    (x0, y3, z0, 3.0),
+    (x0, y3, z0, lowTime),
+    (x0, y3, z, highTime),
+    (x0, y3, z0, lowTime),
 ]
 
 sequence5 = [
-    (x1, y1, z0, 3.0),
-    (x1, y1, z, 30.0),
-    (x1, y1, z0, 3.0),
+    (x1, y1, z0, lowTime),
+    (x1, y1, z, highTime),
+    (x1, y1, z0, lowTime),
 ]
 
 sequence6 = [
-    (x1, y2, z0, 3.0),
-    (x1, y2, z, 30.0),
-    (x1, y2, z0, 3.0),
+    (x1, y2, z0, lowTime),
+    (x1, y2, z, highTime),
+    (x1, y2, z0, lowTime),
 ]
 
 sequence7 = [
-    (x2, y0, z0, 3.0),
-    (x2, y0, z, 30.0),
-    (x2, y0, z0, 3.0),
+    (x2, y0, z0, lowTime),
+    (x2, y0, z, highTime),
+    (x2, y0, z0, lowTime),
 ]
 
 sequence8 = [
-    (x2, y1, z0, 3.0),
-    (x2, y1, z, 30.0),
-    (x2, y1, z0, 3.0),
+    (x2, y1, z0, lowTime),
+    (x2, y1, z, highTime),
+    (x2, y1, z0, lowTime),
 ]
 
 sequence9 = [
-    (x2, y2, z0, 3.0),
-    (x2, y2, z, 30.0),
-    (x2, y2, z0, 3.0),
+    (x2, y2, z0, lowTime),
+    (x2, y2, z, highTime),
+    (x2, y2, z0, lowTime),
 ]
 
 sequence10 = [
-    (x2, y3, z0, 3.0),
-    (x2, y3, z, 30.0),
-    (x2, y3, z0, 3.0),
+    (x2, y3, z0, lowTime),
+    (x2, y3, z, highTime),
+    (x2, y3, z0, lowTime),
 ]
 
 seq_args = {
@@ -155,16 +156,16 @@ seq_args = {
 
 # List of URIs, comment the one you do not want to fly
 uris = {
-    #URI1,
-    #URI2,
-    #URI3,
-    #URI4,
+    URI1,
+    URI2,
+    URI3,
+    URI4,
     URI5,
-    URI6
-    #URI7,
-    #URI8,
-    #URI9,
-    #URI10
+    URI6,
+    URI7,
+    URI8,
+    URI9,
+    URI10
 }#
 
 
@@ -211,7 +212,7 @@ def run_sequence(scf, sequence):
 
         take_off(cf, sequence[0])
         for position in sequence:
-            print('Setting position of Crazyflie {}'.format(cf) + ' to {}'.format(position))
+            print('Setting position of Crazyflie {}'.format(cf.link_uri) + ' to {}'.format(position))
             end_time = time.time() + position[3]
             while time.time() < end_time:
                 cf.commander.send_position_setpoint(position[0],
