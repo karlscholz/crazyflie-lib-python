@@ -40,6 +40,35 @@ from queue import Queue
 import cflib.crtp
 from cflib.crazyflie.swarm import CachedCfFactory
 from cflib.crazyflie.swarm import Swarm
+"""
+The layout of the positions:
+    x2      x1      x0
+
+y3  10              4
+
+            ^ Y
+            |
+y2  9       6       3
+            |
+[ich]       +------> X
+
+y1  8       5       2
+
+
+
+y0  7               1
+"""
+z0 = 1
+z = 2
+
+x0 = 3.5
+x1 = 2.5
+x2 = 1.5
+
+y0 = 1.5
+y1 = 2.5
+y2 = 3.5
+y3 = 4.5
 
 # Time for one step in second
 STEP_TIME = 1
@@ -54,47 +83,24 @@ Ring = namedtuple('Ring', ['r', 'g', 'b', 'intensity', 'time'])
 Quit = namedtuple('Quit', [])
 
 uris = [
-    'radio://0/10/2M/E7E7E7E701',  # cf_id 0, startup position [-0.5, -0.5]
-    'radio://0/10/2M/E7E7E7E702',  # cf_id 1, startup position [ 0, 0]
-    'radio://0/10/2M/E7E7E7E703',  # cf_id 3, startup position [0.5, 0.5]
+    'radio://0/80/2M/E7E7E7E706',  # cf_id 0, startup position [-0.5, -0.5]
+    #'radio://0/80/2M/E7E7E7E703',  # cf_id 1, startup position [ 0, 0]
+    #'radio://0/80/2M/E7E7E7E703',  # cf_id 3, startup position [0.5, 0.5]
     # Add more URIs if you want more copters in the swarm
 ]
 
 sequence = [
     # Step, CF_id,  action
     (0,    0,      Takeoff(0.5, 2)),
-    (0,    2,      Takeoff(0.5, 2)),
-
-    (1,    1,      Takeoff(1.0, 2)),
-
-    (2,    0,      Goto(-0.5,  -0.5,   0.5, 1)),
-    (2,    2,      Goto(0.5,  0.5,   0.5, 1)),
-
-    (3,    1,      Goto(0,  0,   1, 1)),
-
-    (4,    0,      Ring(255, 255, 255, 0.2, 0)),
-    (4,    1,      Ring(255, 0, 0, 0.2, 0)),
-    (4,    2,      Ring(255, 255, 255, 0.2, 0)),
-
-    (5,    0,      Goto(0.5, -0.5, 0.5, 2)),
-    (5,    2,      Goto(-0.5, 0.5, 0.5, 2)),
-
-    (7,    0,      Goto(0.5, 0.5, 0.5, 2)),
-    (7,    2,      Goto(-0.5, -0.5, 0.5, 2)),
-
-    (9,    0,      Goto(-0.5, 0.5, 0.5, 2)),
-    (9,    2,      Goto(0.5, -0.5, 0.5, 2)),
-
-    (11,   0,      Goto(-0.5, -0.5, 0.5, 2)),
-    (11,   2,      Goto(0.5, 0.5, 0.5, 2)),
-
-    (13,    0,      Land(2)),
-    (13,    1,      Land(2)),
-    (13,    2,      Land(2)),
-
-    (15,    0,      Ring(0, 0, 0, 0, 5)),
-    (15,    1,      Ring(0, 0, 0, 0, 5)),
-    (15,    2,      Ring(0, 0, 0, 0, 5)),
+    (2,    0,      Goto(x1, y1, 1, 4)),
+    (6,    0,      Goto(x0, y0, 2, 6)),
+    (12,   0,      Goto(x2, y0, 0.5, 4)),
+    (16,   0,      Goto(x2, y3, 4, 6)),
+    (22,   0,      Goto(x0, y3, 2, 2)),
+    (24,   0,      Goto(x0, y3, 2, 2)),
+    (26,   0,      Goto(x1, y1, 0.4, 4)),
+    (30,   0,      Goto(x1, y1, 0.4, 4)),
+    (34,   0,      Land(2)),
 ]
 
 
@@ -148,8 +154,7 @@ def crazyflie_control(scf):
                            command.intensity, command.time)
             pass
         else:
-            print('Warning! unknown command {} for uri {}'.format(command,
-                                                                  cf.uri))
+            print('Warning! unknown command {} for uri {}'.format(command, cf.uri))
 
 
 def control_thread():
