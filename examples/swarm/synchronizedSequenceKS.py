@@ -44,20 +44,21 @@ from cflib.crazyflie.swarm import Swarm
 The layout of the positions:
     x2      x1      x0
 
-y3  10              4
+y3  9              3
 
             ^ Y
             |
-y2  9       6       3
+y2  8       5       2
             |
-[ich]       +------> X
+[my desk]   +------> X
 
-y1  8       5       2
+y1  7       4       1
 
 
 
-y0  7               1
+y0  6               0
 """
+
 z0 = 1
 z = 2
 
@@ -82,26 +83,220 @@ Ring = namedtuple('Ring', ['r', 'g', 'b', 'intensity', 'time'])
 # Reserved for the control loop, do not use in sequence
 Quit = namedtuple('Quit', [])
 
-uris = [
-    'radio://0/80/2M/E7E7E7E706',  # cf_id 0, startup position [-0.5, -0.5]
-    #'radio://0/80/2M/E7E7E7E703',  # cf_id 1, startup position [ 0, 0]
-    #'radio://0/80/2M/E7E7E7E703',  # cf_id 3, startup position [0.5, 0.5]
-    # Add more URIs if you want more copters in the swarm
-]
+uris = 0
+sequence = 0
 
-sequence = [
-    # Step, CF_id,  action
-    (0,    0,      Takeoff(0.5, 2)),
-    (2,    0,      Goto(x1, y1, 1, 4)),
-    (6,    0,      Goto(x0, y0, 2, 6)),
-    (12,   0,      Goto(x2, y0, 0.5, 4)),
-    (16,   0,      Goto(x2, y3, 4, 6)),
-    (22,   0,      Goto(x0, y3, 2, 2)),
-    (24,   0,      Goto(x0, y3, 2, 2)),
-    (26,   0,      Goto(x1, y1, 0.4, 4)),
-    (30,   0,      Goto(x1, y1, 0.4, 4)),
-    (34,   0,      Land(2)),
-]
+if False: #swith one or all
+    uris = [
+    'radio://0/80/2M/E7E7E7E706', #0
+    ]
+
+    sequence = [
+        # Step, CF_id,  action
+        (0,    0,      Takeoff(0.5, 2)),
+        (2,    0,      Goto(x1, y1, 1, 4)),
+        (6,    0,      Goto(x0, y0, 2, 6)),
+        (12,   0,      Goto(x2, y0, 0.5, 4)),
+        (16,   0,      Goto(x2, y3, 4, 6)),
+        (22,   0,      Goto(x0, y3, 2, 2)),
+        (24,   0,      Goto(x0, y3, 2, 2)),
+        (26,   0,      Goto(x1, y1, 0.4, 4)),
+        (30,   0,      Goto(x1, y1, 0.4, 4)),
+        (34,   0,      Land(2)),
+    ]
+else:
+    uris = [#maximum of 3 per CrazyRadio -> you need at least 4 CrazyRadios on different channels
+    'radio://0/80/2M/E7E7E7E701', #0
+    'radio://0/80/2M/E7E7E7E703', #1
+    'radio://0/80/2M/E7E7E7E704', #2
+    'radio://1/60/2M/E7E7E7E705', #3
+    'radio://1/60/2M/E7E7E7E706', #4
+    'radio://1/60/2M/E7E7E7E708', #5
+    'radio://2/40/2M/E7E7E7E709', #6
+    'radio://2/40/2M/E7E7E7E70A', #7
+    'radio://2/40/2M/E7E7E7E70B', #8
+    'radio://3/20/2M/E7E7E7E70C', #9
+    ]
+    slowerFactor = 2
+    sequence = [
+        # Step, CF_id,  action
+        #Takeoff
+        (0,    0,      Takeoff(1, 2*slowerFactor)),
+        (0,    1,      Takeoff(1, 2*slowerFactor)),
+        (0,    2,      Takeoff(1, 2*slowerFactor)),
+        (0,    3,      Takeoff(1, 2*slowerFactor)),
+        (0,    4,      Takeoff(1, 2*slowerFactor)),
+        (0,    5,      Takeoff(1, 2*slowerFactor)),
+        (0,    6,      Takeoff(1, 2*slowerFactor)),
+        (0,    7,      Takeoff(1, 2*slowerFactor)),
+        (0,    8,      Takeoff(1, 2*slowerFactor)),
+        (0,    9,      Takeoff(1, 2*slowerFactor)),
+        #Square Step1 hold Position
+        (2*slowerFactor,    0,      Goto(x0, y0, 1, 2*slowerFactor)),
+        (2*slowerFactor,    1,      Goto(x0, y1, 1, 2*slowerFactor)),
+        (2*slowerFactor,    2,      Goto(x0, y2, 1, 2*slowerFactor)),
+        (2*slowerFactor,    3,      Goto(x0, y3, 1, 2*slowerFactor)),
+        (2*slowerFactor,    4,      Goto(x1, y1, 1, 2*slowerFactor)),
+        (2*slowerFactor,    5,      Goto(x1, y2, 1, 2*slowerFactor)),
+        (2*slowerFactor,    6,      Goto(x2, y0, 1, 2*slowerFactor)),
+        (2*slowerFactor,    7,      Goto(x2, y1, 1, 2*slowerFactor)),
+        (2*slowerFactor,    8,      Goto(x2, y2, 1, 2*slowerFactor)),
+        (2*slowerFactor,    9,      Goto(x2, y3, 1, 2*slowerFactor)),
+        #Square Step2 move right and up
+        (4*slowerFactor,    0,      Goto(x0, y0-1, 2, 2*slowerFactor)),
+        (4*slowerFactor,    1,      Goto(x0, y1-1, 2, 2*slowerFactor)),
+        (4*slowerFactor,    2,      Goto(x0, y2-1, 2, 2*slowerFactor)),
+        (4*slowerFactor,    3,      Goto(x0, y3-1, 2, 2*slowerFactor)),
+        (4*slowerFactor,    4,      Goto(x1, y1-1, 2, 2*slowerFactor)),
+        (4*slowerFactor,    5,      Goto(x1, y2-1, 2, 2*slowerFactor)),
+        (4*slowerFactor,    6,      Goto(x2, y0-1, 2, 2*slowerFactor)),
+        (4*slowerFactor,    7,      Goto(x2, y1-1, 2, 2*slowerFactor)),
+        (4*slowerFactor,    8,      Goto(x2, y2-1, 2, 2*slowerFactor)),
+        (4*slowerFactor,    9,      Goto(x2, y3-1, 2, 2*slowerFactor)),
+        #Square Step 3 move back
+        (6*slowerFactor,    0,      Goto(x0-1, y0-1, 2, 2*slowerFactor)),
+        (6*slowerFactor,    1,      Goto(x0-1, y1-1, 2, 2*slowerFactor)),
+        (6*slowerFactor,    2,      Goto(x0-1, y2-1, 2, 2*slowerFactor)),
+        (6*slowerFactor,    3,      Goto(x0-1, y3-1, 2, 2*slowerFactor)),
+        (6*slowerFactor,    4,      Goto(x1-1, y1-1, 2, 2*slowerFactor)),
+        (6*slowerFactor,    5,      Goto(x1-1, y2-1, 2, 2*slowerFactor)),
+        (6*slowerFactor,    6,      Goto(x2-1, y0-1, 2, 2*slowerFactor)),
+        (6*slowerFactor,    7,      Goto(x2-1, y1-1, 2, 2*slowerFactor)),
+        (6*slowerFactor,    8,      Goto(x2-1, y2-1, 2, 2*slowerFactor)),
+        (6*slowerFactor,    9,      Goto(x2-1, y3-1, 2, 2*slowerFactor)),
+        #Square Step 3 move left and down slowly
+        (8*slowerFactor,    0,      Goto(x0-1, y0, .5, 4*slowerFactor)),
+        (8*slowerFactor,    1,      Goto(x0-1, y1, .5, 4*slowerFactor)),
+        (8*slowerFactor,    2,      Goto(x0-1, y2, .5, 4*slowerFactor)),
+        (8*slowerFactor,    3,      Goto(x0-1, y3, .5, 4*slowerFactor)),
+        (8*slowerFactor,    4,      Goto(x1-1, y1, .5, 4*slowerFactor)),
+        (8*slowerFactor,    5,      Goto(x1-1, y2, .5, 4*slowerFactor)),
+        (8*slowerFactor,    6,      Goto(x2-1, y0, .5, 4*slowerFactor)),
+        (8*slowerFactor,    7,      Goto(x2-1, y1, .5, 4*slowerFactor)),
+        (8*slowerFactor,    8,      Goto(x2-1, y2, .5, 4*slowerFactor)),
+        (8*slowerFactor,    9,      Goto(x2-1, y3, .5, 4*slowerFactor)),
+        #Square Step 4 move forward and up
+        (12*slowerFactor,    0,      Goto(x0, y0, 1, 2*slowerFactor)),
+        (12*slowerFactor,    1,      Goto(x0, y1, 1, 2*slowerFactor)),
+        (12*slowerFactor,    2,      Goto(x0, y2, 1, 2*slowerFactor)),
+        (12*slowerFactor,    3,      Goto(x0, y3, 1, 2*slowerFactor)),
+        (12*slowerFactor,    4,      Goto(x1, y1, 1, 2*slowerFactor)),
+        (12*slowerFactor,    5,      Goto(x1, y2, 1, 2*slowerFactor)),
+        (12*slowerFactor,    6,      Goto(x2, y0, 1, 2*slowerFactor)),
+        (12*slowerFactor,    7,      Goto(x2, y1, 1, 2*slowerFactor)),
+        (12*slowerFactor,    8,      Goto(x2, y2, 1, 2*slowerFactor)),
+        (12*slowerFactor,    9,      Goto(x2, y3, 1, 2*slowerFactor)),
+        #Pyramid Step 1 hold position
+        (14*slowerFactor,    0,      Goto(x0, y0, 1, 2*slowerFactor)),
+        (14*slowerFactor,    1,      Goto(x0, y1, 1, 2*slowerFactor)),
+        (14*slowerFactor,    2,      Goto(x0, y2, 1, 2*slowerFactor)),
+        (14*slowerFactor,    3,      Goto(x0, y3, 1, 2*slowerFactor)),
+        (14*slowerFactor,    4,      Goto(x1, y1, 1, 2*slowerFactor)),
+        (14*slowerFactor,    5,      Goto(x1, y2, 1, 2*slowerFactor)),
+        (14*slowerFactor,    6,      Goto(x2, y0, 1, 2*slowerFactor)),
+        (14*slowerFactor,    7,      Goto(x2, y1, 1, 2*slowerFactor)),
+        (14*slowerFactor,    8,      Goto(x2, y2, 1, 2*slowerFactor)),
+        (14*slowerFactor,    9,      Goto(x2, y3, 1, 2*slowerFactor)),
+        #Pyramid Step 2 move to position
+        (16*slowerFactor,    0,      Goto(x0+1, y0-1, .5, 3*slowerFactor)),
+        (16*slowerFactor,    1,      Goto(x0, y1, 1.5, 3*slowerFactor)),
+        (16*slowerFactor,    2,      Goto(x0, y2, 1.5, 3*slowerFactor)),
+        (16*slowerFactor,    3,      Goto(x0+1, y3+1, .5, 3*slowerFactor)),
+        (16*slowerFactor,    4,      Goto(x1, y1, 2.5, 3*slowerFactor)),
+        (16*slowerFactor,    5,      Goto(x1, y2, 2.5, 3*slowerFactor)),
+        (16*slowerFactor,    6,      Goto(x2-1, y0-1, .5, 3*slowerFactor)),
+        (16*slowerFactor,    7,      Goto(x2, y1, 1.5, 3*slowerFactor)),
+        (16*slowerFactor,    8,      Goto(x2, y2, 1.5, 3*slowerFactor)),
+        (16*slowerFactor,    9,      Goto(x2-1, y3+1, .5, 3*slowerFactor)),
+        #Pyramid Step 3 move in cw and ccw square 1
+        (19*slowerFactor,    6,      Goto(x0+1, y0-1, .5, 3*slowerFactor)),
+        (19*slowerFactor,    2,      Goto(x0, y1, 1.5, 3*slowerFactor)),
+        (19*slowerFactor,    8,      Goto(x0, y2, 1.5, 3*slowerFactor)),
+        (19*slowerFactor,    0,      Goto(x0+1, y3+1, .5, 3*slowerFactor)),
+        (19*slowerFactor,    4,      Goto(x1+1, y1, 2.5, 3*slowerFactor)),
+        (19*slowerFactor,    5,      Goto(x1, y2-1, 2.5, 3*slowerFactor)),
+        (19*slowerFactor,    9,      Goto(x2-1, y0-1, .5, 3*slowerFactor)),
+        (19*slowerFactor,    1,      Goto(x2, y1, 1.5, 3*slowerFactor)),
+        (19*slowerFactor,    7,      Goto(x2, y2, 1.5, 3*slowerFactor)),
+        (19*slowerFactor,    3,      Goto(x2-1, y3+1, .5, 3*slowerFactor)),
+        #Pyramid Step 4 move in cw and ccw square 2
+        (22*slowerFactor,    9,      Goto(x0+1, y0-1, .5, 3*slowerFactor)),
+        (22*slowerFactor,    8,      Goto(x0, y1, 1.5, 3*slowerFactor)),
+        (22*slowerFactor,    7,      Goto(x0, y2, 1.5, 3*slowerFactor)),
+        (22*slowerFactor,    6,      Goto(x0+1, y3+1, .5, 3*slowerFactor)),
+        (22*slowerFactor,    4,      Goto(x1+1, y1+1, 2.5, 3*slowerFactor)),
+        (22*slowerFactor,    5,      Goto(x1+1, y2-1, 2.5, 3*slowerFactor)),
+        (22*slowerFactor,    3,      Goto(x2-1, y0-1, .5, 3*slowerFactor)),
+        (22*slowerFactor,    2,      Goto(x2, y1, 1.5, 3*slowerFactor)),
+        (22*slowerFactor,    1,      Goto(x2, y2, 1.5, 3*slowerFactor)),
+        (22*slowerFactor,    0,      Goto(x2-1, y3+1, .5, 3*slowerFactor)),
+        #Pyramid Step 5 move in cw and ccw square 3
+        (25*slowerFactor,    3,      Goto(x0+1, y0-1, .5, 3*slowerFactor)),
+        (25*slowerFactor,    7,      Goto(x0, y1, 1.5, 3*slowerFactor)),
+        (25*slowerFactor,    1,      Goto(x0, y2, 1.5, 3*slowerFactor)),
+        (25*slowerFactor,    9,      Goto(x0+1, y3+1, .5, 3*slowerFactor)),
+        (25*slowerFactor,    4,      Goto(x1, y1+1, 2.5, 3*slowerFactor)),
+        (25*slowerFactor,    5,      Goto(x1+1, y2, 2.5, 3*slowerFactor)),
+        (25*slowerFactor,    0,      Goto(x2-1, y0-1, .5, 3*slowerFactor)),
+        (25*slowerFactor,    8,      Goto(x2, y1, 1.5, 3*slowerFactor)),
+        (25*slowerFactor,    2,      Goto(x2, y2, 1.5, 3*slowerFactor)),
+        (25*slowerFactor,    6,      Goto(x2-1, y3+1, .5, 3*slowerFactor)),
+        #Pyramid Step 6 move back to original position
+        (28*slowerFactor,    0,      Goto(x0+1, y0-1, .5, 3*slowerFactor)),
+        (28*slowerFactor,    1,      Goto(x0, y1, 1.5, 3*slowerFactor)),
+        (28*slowerFactor,    2,      Goto(x0, y2, 1.5, 3*slowerFactor)),
+        (28*slowerFactor,    3,      Goto(x0+1, y3+1, .5, 3*slowerFactor)),
+        (28*slowerFactor,    4,      Goto(x1, y1, 2.5, 3*slowerFactor)),
+        (28*slowerFactor,    5,      Goto(x1, y2, 2.5, 3*slowerFactor)),
+        (28*slowerFactor,    6,      Goto(x2-1, y0-1, .5, 3*slowerFactor)),
+        (28*slowerFactor,    7,      Goto(x2, y1, 1.5, 3*slowerFactor)),
+        (28*slowerFactor,    8,      Goto(x2, y2, 1.5, 3*slowerFactor)),
+        (28*slowerFactor,    9,      Goto(x2-1, y3+1, .5, 3*slowerFactor)),
+        #Pyramid Step 7 stay in pyramid position 
+        (31*slowerFactor,    0,      Goto(x0+1, y0-1, .5, 1*slowerFactor)),
+        (31*slowerFactor,    1,      Goto(x0, y1, 1.5, 1*slowerFactor)),
+        (31*slowerFactor,    2,      Goto(x0, y2, 1.5, 1*slowerFactor)),
+        (31*slowerFactor,    3,      Goto(x0+1, y3+1, .5, 1*slowerFactor)),
+        (31*slowerFactor,    4,      Goto(x1, y1, 2.5, 1*slowerFactor)),
+        (31*slowerFactor,    5,      Goto(x1, y2, 2.5, 1*slowerFactor)),
+        (31*slowerFactor,    6,      Goto(x2-1, y0-1, .5, 1*slowerFactor)),
+        (31*slowerFactor,    7,      Goto(x2, y1, 1.5, 1*slowerFactor)),
+        (31*slowerFactor,    8,      Goto(x2, y2, 1.5, 1*slowerFactor)),
+        (31*slowerFactor,    9,      Goto(x2-1, y3+1, .5, 1*slowerFactor)),
+        #Landing Step 1 move in normal formation
+        (32*slowerFactor,    0,      Goto(x0, y0, 1.5, 2*slowerFactor)),
+        (32*slowerFactor,    1,      Goto(x0, y1, 1.5, 2*slowerFactor)),
+        (32*slowerFactor,    2,      Goto(x0, y2, 1.5, 2*slowerFactor)),
+        (32*slowerFactor,    3,      Goto(x0, y3, 1.5, 2*slowerFactor)),
+        (32*slowerFactor,    4,      Goto(x1, y1, 1.5, 2*slowerFactor)),
+        (32*slowerFactor,    5,      Goto(x1, y2, 1.5, 2*slowerFactor)),
+        (32*slowerFactor,    6,      Goto(x2, y0, 1.5, 2*slowerFactor)),
+        (32*slowerFactor,    7,      Goto(x2, y1, 1.5, 2*slowerFactor)),
+        (32*slowerFactor,    8,      Goto(x2, y2, 1.5, 2*slowerFactor)),
+        (32*slowerFactor,    9,      Goto(x2, y3, 1.5, 2*slowerFactor)),
+        #Landing Step 1 move in normal formation
+        (34*slowerFactor,    0,      Goto(x0, y0, 0.5, 2*slowerFactor)),
+        (34*slowerFactor,    1,      Goto(x0, y1, 0.5, 2*slowerFactor)),
+        (34*slowerFactor,    2,      Goto(x0, y2, 0.5, 2*slowerFactor)),
+        (34*slowerFactor,    3,      Goto(x0, y3, 0.5, 2*slowerFactor)),
+        (34*slowerFactor,    4,      Goto(x1, y1, 0.5, 2*slowerFactor)),
+        (34*slowerFactor,    5,      Goto(x1, y2, 0.5, 2*slowerFactor)),
+        (34*slowerFactor,    6,      Goto(x2, y0, 0.5, 2*slowerFactor)),
+        (34*slowerFactor,    7,      Goto(x2, y1, 0.5, 2*slowerFactor)),
+        (34*slowerFactor,    8,      Goto(x2, y2, 0.5, 2*slowerFactor)),
+        (34*slowerFactor,    9,      Goto(x2, y3, 0.5, 2*slowerFactor)),
+        #Landing Step 3 final Land
+        (36*slowerFactor,    0,      Land(2)),
+        (36*slowerFactor,    1,      Land(2)),
+        (36*slowerFactor,    2,      Land(2)),
+        (36*slowerFactor,    3,      Land(2)),
+        (36*slowerFactor,    4,      Land(2)),
+        (36*slowerFactor,    5,      Land(2)),
+        (36*slowerFactor,    6,      Land(2)),
+        (36*slowerFactor,    7,      Land(2)),
+        (36*slowerFactor,    8,      Land(2)),
+        (36*slowerFactor,    9,      Land(2)),
+    ]
 
 
 def activate_high_level_commander(scf):
