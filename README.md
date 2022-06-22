@@ -1,3 +1,6 @@
+#Private Fork
+git remote add bitcraze https://github.com/bitcraze/crazyflie-lib-python
+
 # cflib: Crazyflie python library [![CI](https://github.com/bitcraze/crazyflie-lib-python/workflows/CI/badge.svg)](https://github.com/bitcraze/crazyflie-lib-python/actions)
 
 cflib is an API written in Python that is used to communicate with the Crazyflie
