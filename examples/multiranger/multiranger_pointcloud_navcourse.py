@@ -196,6 +196,7 @@ class MainWindow(QtWidgets.QMainWindow):
             'right': data['range.right']
         }
         self.canvas.set_measurement(measurement)
+        self.canvas.detectStuff()
         #hier user code
 
     def closeEvent(self, event):
@@ -359,6 +360,20 @@ class Canvas(scene.SceneCanvas):
         if (len(data) > 0):
             self.meas_data = np.append(self.meas_data, data, axis=0)
         self.meas_markers.set_data(self.meas_data, face_color='blue', size=5)
+
+    def detectStuff(self):
+        for point in self.meas.data:
+            vector = math.atan(point,self.meas.data[-1])
+            
+            bOkay = True
+            i = 0
+            fThreshold = 0.349 # ca 20°
+            while bOkay:
+                vector2 = math.atan(self.meas.data[-1-i] - self.meas_data[-2-i])
+                if (vector - vector2) < fThreshold:
+                    vector =  math.atan(point - self.meas_data[-2-i])
+                    self.meas_data.remove([-1-i])
+                i = i + 1
 
 
 if __name__ == '__main__':

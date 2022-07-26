@@ -86,9 +86,9 @@ Quit = namedtuple('Quit', [])
 uris = 0
 sequence = 0
 
-if False: #swith one or all
+if True: #swith one or all
     uris = [
-    'radio://0/80/2M/E7E7E7E706', #0
+    'radio://0/60/2M/E7E7E7E706', #0
     ]
 
     sequence = [
