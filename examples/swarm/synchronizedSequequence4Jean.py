@@ -88,10 +88,10 @@ sequence = 0
 
 if True: #swith one or all
     uris = [
-    'radio://0/80/2M/E7E7E7E70F', #0
+    'radio://0/80/2M/E7E7E7E703', #0
     ]
 
-    sequence = [
+    sequence = [ #Place CF on x1 y1 => the center more Y0 position
         # Step, CF_id,  action
         (0,    0,      Takeoff(0.5, 2)),
         (2,    0,      Goto(x1, y1, 1, 4)),
