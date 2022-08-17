@@ -44,19 +44,19 @@ from cflib.crazyflie.swarm import Swarm
 The layout of the positions:
     x2      x1      x0
 
-y3  9              3
+y3  X               X
 
             ^ Y
             |
-y2  8       5       2
+y2  A       5       X
             |
 [my desk]   +------> X
 
-y1  7       4       1
+y1  C       3       X
 
 
 
-y0  6               0
+y0  X               X
 """
 
 z0 = 1
@@ -86,9 +86,12 @@ Quit = namedtuple('Quit', [])
 uris = 0
 sequence = 0
 
-if True: #swith one or all
+if False: #swith one or all
     uris = [
     'radio://0/80/2M/E7E7E7E703', #0
+    #'radio://1/60/2M/E7E7E7E705', #0
+    #'radio://2/40/2M/E7E7E7E70A', #0
+    #'radio://3/20/2M/E7E7E7E70C', #0
     ]
 
     sequence = [ #Place CF on x1 y1 => the center more Y0 position
@@ -106,16 +109,10 @@ if True: #swith one or all
     ]
 else:
     uris = [#maximum of 3 per CrazyRadio -> you need at least 4 CrazyRadios on different channels
-    'radio://0/80/2M/E7E7E7E701', #0
-    'radio://0/80/2M/E7E7E7E703', #1
-    'radio://0/80/2M/E7E7E7E704', #2
-    'radio://1/60/2M/E7E7E7E705', #3
-    'radio://1/60/2M/E7E7E7E706', #4
-    'radio://1/60/2M/E7E7E7E708', #5
-    'radio://2/40/2M/E7E7E7E709', #6
-    'radio://2/40/2M/E7E7E7E70A', #7
-    'radio://2/40/2M/E7E7E7E70B', #8
-    'radio://3/20/2M/E7E7E7E70C', #9
+    'radio://0/80/2M/E7E7E7E703', #0
+    'radio://1/60/2M/E7E7E7E705', #1
+    'radio://2/40/2M/E7E7E7E70A', #2
+    'radio://3/20/2M/E7E7E7E70C', #3
     ]
     slowerFactor = 2
     baseHeight = 0.5
@@ -126,177 +123,42 @@ else:
         (0,    1,      Takeoff(1, 2*slowerFactor)),
         (0,    2,      Takeoff(1, 2*slowerFactor)),
         (0,    3,      Takeoff(1, 2*slowerFactor)),
-        (0,    4,      Takeoff(1, 2*slowerFactor)),
-        (0,    5,      Takeoff(1, 2*slowerFactor)),
-        (0,    6,      Takeoff(1, 2*slowerFactor)),
-        (0,    7,      Takeoff(1, 2*slowerFactor)),
-        (0,    8,      Takeoff(1, 2*slowerFactor)),
-        (0,    9,      Takeoff(1, 2*slowerFactor)),
         #Square Step1 hold Position
-        (2*slowerFactor,    0,      Goto(x0, y0, 1+baseHeight, 2*slowerFactor)),
-        (2*slowerFactor,    1,      Goto(x0, y1, 1+baseHeight, 2*slowerFactor)),
-        (2*slowerFactor,    2,      Goto(x0, y2, 1+baseHeight, 2*slowerFactor)),
-        (2*slowerFactor,    3,      Goto(x0, y3, 1+baseHeight, 2*slowerFactor)),
-        (2*slowerFactor,    4,      Goto(x1, y1, 1+baseHeight, 2*slowerFactor)),
-        (2*slowerFactor,    5,      Goto(x1, y2, 1+baseHeight, 2*slowerFactor)),
-        (2*slowerFactor,    6,      Goto(x2, y0, 1+baseHeight, 2*slowerFactor)),
-        (2*slowerFactor,    7,      Goto(x2, y1, 1+baseHeight, 2*slowerFactor)),
-        (2*slowerFactor,    8,      Goto(x2, y2, 1+baseHeight, 2*slowerFactor)),
-        (2*slowerFactor,    9,      Goto(x2, y3, 1+baseHeight, 2*slowerFactor)),
-        #Square Step2 move right and up
-        (4*slowerFactor,    0,      Goto(x0, y0-1, 2+baseHeight, 2*slowerFactor)),
-        (4*slowerFactor,    1,      Goto(x0, y1-1, 2+baseHeight, 2*slowerFactor)),
-        (4*slowerFactor,    2,      Goto(x0, y2-1, 2+baseHeight, 2*slowerFactor)),
-        (4*slowerFactor,    3,      Goto(x0, y3-1, 2+baseHeight, 2*slowerFactor)),
-        (4*slowerFactor,    4,      Goto(x1, y1-1, 2+baseHeight, 2*slowerFactor)),
-        (4*slowerFactor,    5,      Goto(x1, y2-1, 2+baseHeight, 2*slowerFactor)),
-        (4*slowerFactor,    6,      Goto(x2, y0-1, 2+baseHeight, 2*slowerFactor)),
-        (4*slowerFactor,    7,      Goto(x2, y1-1, 2+baseHeight, 2*slowerFactor)),
-        (4*slowerFactor,    8,      Goto(x2, y2-1, 2+baseHeight, 2*slowerFactor)),
-        (4*slowerFactor,    9,      Goto(x2, y3-1, 2+baseHeight, 2*slowerFactor)),
-        #Square Step 3 move back
-        (6*slowerFactor,    0,      Goto(x0-1, y0-1, 2+baseHeight, 2*slowerFactor)),
-        (6*slowerFactor,    1,      Goto(x0-1, y1-1, 2+baseHeight, 2*slowerFactor)),
-        (6*slowerFactor,    2,      Goto(x0-1, y2-1, 2+baseHeight, 2*slowerFactor)),
-        (6*slowerFactor,    3,      Goto(x0-1, y3-1, 2+baseHeight, 2*slowerFactor)),
-        (6*slowerFactor,    4,      Goto(x1-1, y1-1, 2+baseHeight, 2*slowerFactor)),
-        (6*slowerFactor,    5,      Goto(x1-1, y2-1, 2+baseHeight, 2*slowerFactor)),
-        (6*slowerFactor,    6,      Goto(x2-1, y0-1, 2+baseHeight, 2*slowerFactor)),
-        (6*slowerFactor,    7,      Goto(x2-1, y1-1, 2+baseHeight, 2*slowerFactor)),
-        (6*slowerFactor,    8,      Goto(x2-1, y2-1, 2+baseHeight, 2*slowerFactor)),
-        (6*slowerFactor,    9,      Goto(x2-1, y3-1, 2+baseHeight, 2*slowerFactor)),
-        #Square Step 3 move left and down slowly
-        (8*slowerFactor,    0,      Goto(x0-1, y0, .5+baseHeight, 4*slowerFactor)),
-        (8*slowerFactor,    1,      Goto(x0-1, y1, .5+baseHeight, 4*slowerFactor)),
-        (8*slowerFactor,    2,      Goto(x0-1, y2, .5+baseHeight, 4*slowerFactor)),
-        (8*slowerFactor,    3,      Goto(x0-1, y3, .5+baseHeight, 4*slowerFactor)),
-        (8*slowerFactor,    4,      Goto(x1-1, y1, .5+baseHeight, 4*slowerFactor)),
-        (8*slowerFactor,    5,      Goto(x1-1, y2, .5+baseHeight, 4*slowerFactor)),
-        (8*slowerFactor,    6,      Goto(x2-1, y0, .5+baseHeight, 4*slowerFactor)),
-        (8*slowerFactor,    7,      Goto(x2-1, y1, .5+baseHeight, 4*slowerFactor)),
-        (8*slowerFactor,    8,      Goto(x2-1, y2, .5+baseHeight, 4*slowerFactor)),
-        (8*slowerFactor,    9,      Goto(x2-1, y3, .5+baseHeight, 4*slowerFactor)),
-        #Square Step 4 move forward and up
-        (12*slowerFactor,    0,      Goto(x0, y0, 1+baseHeight, 2*slowerFactor)),
-        (12*slowerFactor,    1,      Goto(x0, y1, 1+baseHeight, 2*slowerFactor)),
-        (12*slowerFactor,    2,      Goto(x0, y2, 1+baseHeight, 2*slowerFactor)),
-        (12*slowerFactor,    3,      Goto(x0, y3, 1+baseHeight, 2*slowerFactor)),
-        (12*slowerFactor,    4,      Goto(x1, y1, 1+baseHeight, 2*slowerFactor)),
-        (12*slowerFactor,    5,      Goto(x1, y2, 1+baseHeight, 2*slowerFactor)),
-        (12*slowerFactor,    6,      Goto(x2, y0, 1+baseHeight, 2*slowerFactor)),
-        (12*slowerFactor,    7,      Goto(x2, y1, 1+baseHeight, 2*slowerFactor)),
-        (12*slowerFactor,    8,      Goto(x2, y2, 1+baseHeight, 2*slowerFactor)),
-        (12*slowerFactor,    9,      Goto(x2, y3, 1+baseHeight, 2*slowerFactor)),
-        #Pyramid Step 1 hold position
-        (14*slowerFactor,    0,      Goto(x0, y0, 1+baseHeight, 2*slowerFactor)),
-        (14*slowerFactor,    1,      Goto(x0, y1, 1+baseHeight, 2*slowerFactor)),
-        (14*slowerFactor,    2,      Goto(x0, y2, 1+baseHeight, 2*slowerFactor)),
-        (14*slowerFactor,    3,      Goto(x0, y3, 1+baseHeight, 2*slowerFactor)),
-        (14*slowerFactor,    4,      Goto(x1, y1, 1+baseHeight, 2*slowerFactor)),
-        (14*slowerFactor,    5,      Goto(x1, y2, 1+baseHeight, 2*slowerFactor)),
-        (14*slowerFactor,    6,      Goto(x2, y0, 1+baseHeight, 2*slowerFactor)),
-        (14*slowerFactor,    7,      Goto(x2, y1, 1+baseHeight, 2*slowerFactor)),
-        (14*slowerFactor,    8,      Goto(x2, y2, 1+baseHeight, 2*slowerFactor)),
-        (14*slowerFactor,    9,      Goto(x2, y3, 1+baseHeight, 2*slowerFactor)),
-        #Pyramid Step 2 move to position
-        (16*slowerFactor,    0,      Goto(x0+1, y0-1, .5+baseHeight, 3*slowerFactor)),
-        (16*slowerFactor,    1,      Goto(x0, y1, 1.5+baseHeight, 3*slowerFactor)),
-        (16*slowerFactor,    2,      Goto(x0, y2, 1.5+baseHeight, 3*slowerFactor)),
-        (16*slowerFactor,    3,      Goto(x0+1, y3+1, .5+baseHeight, 3*slowerFactor)),
-        (16*slowerFactor,    4,      Goto(x1, y1, 2.5+baseHeight, 3*slowerFactor)),
-        (16*slowerFactor,    5,      Goto(x1, y2, 2.5+baseHeight, 3*slowerFactor)),
-        (16*slowerFactor,    6,      Goto(x2-1, y0-1, .5+baseHeight, 3*slowerFactor)),
-        (16*slowerFactor,    7,      Goto(x2, y1, 1.5+baseHeight, 3*slowerFactor)),
-        (16*slowerFactor,    8,      Goto(x2, y2, 1.5+baseHeight, 3*slowerFactor)),
-        (16*slowerFactor,    9,      Goto(x2-1, y3+1, .5+baseHeight, 3*slowerFactor)),
-        #Pyramid Step 3 move in cw and ccw square 1
-        (19*slowerFactor,    6,      Goto(x0+1, y0-1, .5+baseHeight, 3*slowerFactor)),
-        (19*slowerFactor,    2,      Goto(x0, y1, 1.5+baseHeight, 3*slowerFactor)),
-        (19*slowerFactor,    8,      Goto(x0, y2, 1.5+baseHeight, 3*slowerFactor)),
-        (19*slowerFactor,    0,      Goto(x0+1, y3+1, .5+baseHeight, 3*slowerFactor)),
-        (19*slowerFactor,    4,      Goto(x1+1, y1, 2.5+baseHeight, 3*slowerFactor)),
-        (19*slowerFactor,    5,      Goto(x1, y2-1, 2.5+baseHeight, 3*slowerFactor)),
-        (19*slowerFactor,    9,      Goto(x2-1, y0-1, .5+baseHeight, 3*slowerFactor)),
-        (19*slowerFactor,    1,      Goto(x2, y1, 1.5+baseHeight, 3*slowerFactor)),
-        (19*slowerFactor,    7,      Goto(x2, y2, 1.5+baseHeight, 3*slowerFactor)),
-        (19*slowerFactor,    3,      Goto(x2-1, y3+1, .5+baseHeight, 3*slowerFactor)),
-        #Pyramid Step 4 move in cw and ccw square 2
-        (22*slowerFactor,    9,      Goto(x0+1, y0-1, .5+baseHeight, 3*slowerFactor)),
-        (22*slowerFactor,    8,      Goto(x0, y1, 1.5+baseHeight, 3*slowerFactor)),
-        (22*slowerFactor,    7,      Goto(x0, y2, 1.5+baseHeight, 3*slowerFactor)),
-        (22*slowerFactor,    6,      Goto(x0+1, y3+1, .5+baseHeight, 3*slowerFactor)),
-        (22*slowerFactor,    4,      Goto(x1+1, y1+1, 2.5+baseHeight, 3*slowerFactor)),
-        (22*slowerFactor,    5,      Goto(x1+1, y2-1, 2.5+baseHeight, 3*slowerFactor)),
-        (22*slowerFactor,    3,      Goto(x2-1, y0-1, .5+baseHeight, 3*slowerFactor)),
-        (22*slowerFactor,    2,      Goto(x2, y1, 1.5+baseHeight, 3*slowerFactor)),
-        (22*slowerFactor,    1,      Goto(x2, y2, 1.5+baseHeight, 3*slowerFactor)),
-        (22*slowerFactor,    0,      Goto(x2-1, y3+1, .5+baseHeight, 3*slowerFactor)),
-        #Pyramid Step 5 move in cw and ccw square 3
-        (25*slowerFactor,    3,      Goto(x0+1, y0-1, .5+baseHeight, 3*slowerFactor)),
-        (25*slowerFactor,    7,      Goto(x0, y1, 1.5+baseHeight, 3*slowerFactor)),
-        (25*slowerFactor,    1,      Goto(x0, y2, 1.5+baseHeight, 3*slowerFactor)),
-        (25*slowerFactor,    9,      Goto(x0+1, y3+1, .5+baseHeight, 3*slowerFactor)),
-        (25*slowerFactor,    4,      Goto(x1, y1+1, 2.5+baseHeight, 3*slowerFactor)),
-        (25*slowerFactor,    5,      Goto(x1+1, y2, 2.5+baseHeight, 3*slowerFactor)),
-        (25*slowerFactor,    0,      Goto(x2-1, y0-1, .5+baseHeight, 3*slowerFactor)),
-        (25*slowerFactor,    8,      Goto(x2, y1, 1.5+baseHeight, 3*slowerFactor)),
-        (25*slowerFactor,    2,      Goto(x2, y2, 1.5+baseHeight, 3*slowerFactor)),
-        (25*slowerFactor,    6,      Goto(x2-1, y3+1, .5+baseHeight, 3*slowerFactor)),
-        #Pyramid Step 6 move back to original position
-        (28*slowerFactor,    0,      Goto(x0+1, y0-1, .5+baseHeight, 3*slowerFactor)),
-        (28*slowerFactor,    1,      Goto(x0, y1, 1.5+baseHeight, 3*slowerFactor)),
-        (28*slowerFactor,    2,      Goto(x0, y2, 1.5+baseHeight, 3*slowerFactor)),
-        (28*slowerFactor,    3,      Goto(x0+1, y3+1, .5+baseHeight, 3*slowerFactor)),
-        (28*slowerFactor,    4,      Goto(x1, y1, 2.5+baseHeight, 3*slowerFactor)),
-        (28*slowerFactor,    5,      Goto(x1, y2, 2.5+baseHeight, 3*slowerFactor)),
-        (28*slowerFactor,    6,      Goto(x2-1, y0-1, .5+baseHeight, 3*slowerFactor)),
-        (28*slowerFactor,    7,      Goto(x2, y1, 1.5+baseHeight, 3*slowerFactor)),
-        (28*slowerFactor,    8,      Goto(x2, y2, 1.5+baseHeight, 3*slowerFactor)),
-        (28*slowerFactor,    9,      Goto(x2-1, y3+1, .5+baseHeight, 3*slowerFactor)),
-        #Pyramid Step 7 stay in pyramid position 
-        (31*slowerFactor,    0,      Goto(x0+1, y0-1, .5+baseHeight, 1*slowerFactor)),
-        (31*slowerFactor,    1,      Goto(x0, y1, 1.5+baseHeight, 1*slowerFactor)),
-        (31*slowerFactor,    2,      Goto(x0, y2, 1.5+baseHeight, 1*slowerFactor)),
-        (31*slowerFactor,    3,      Goto(x0+1, y3+1, .5+baseHeight, 1*slowerFactor)),
-        (31*slowerFactor,    4,      Goto(x1, y1, 2.5+baseHeight, 1*slowerFactor)),
-        (31*slowerFactor,    5,      Goto(x1, y2, 2.5+baseHeight, 1*slowerFactor)),
-        (31*slowerFactor,    6,      Goto(x2-1, y0-1, .5+baseHeight, 1*slowerFactor)),
-        (31*slowerFactor,    7,      Goto(x2, y1, 1.5+baseHeight, 1*slowerFactor)),
-        (31*slowerFactor,    8,      Goto(x2, y2, 1.5+baseHeight, 1*slowerFactor)),
-        (31*slowerFactor,    9,      Goto(x2-1, y3+1, .5+baseHeight, 1*slowerFactor)),
-        #Landing Step 1 move in normal formation
-        (32*slowerFactor,    0,      Goto(x0, y0, 1.5, 2*slowerFactor)),
-        (32*slowerFactor,    1,      Goto(x0, y1, 1.5, 2*slowerFactor)),
-        (32*slowerFactor,    2,      Goto(x0, y2, 1.5, 2*slowerFactor)),
-        (32*slowerFactor,    3,      Goto(x0, y3, 1.5, 2*slowerFactor)),
-        (32*slowerFactor,    4,      Goto(x1, y1, 1.5, 2*slowerFactor)),
-        (32*slowerFactor,    5,      Goto(x1, y2, 1.5, 2*slowerFactor)),
-        (32*slowerFactor,    6,      Goto(x2, y0, 1.5, 2*slowerFactor)),
-        (32*slowerFactor,    7,      Goto(x2, y1, 1.5, 2*slowerFactor)),
-        (32*slowerFactor,    8,      Goto(x2, y2, 1.5, 2*slowerFactor)),
-        (32*slowerFactor,    9,      Goto(x2, y3, 1.5, 2*slowerFactor)),
-        #Landing Step 1 move in normal formation
-        (34*slowerFactor,    0,      Goto(x0, y0, 0.5, 2*slowerFactor)),
-        (34*slowerFactor,    1,      Goto(x0, y1, 0.5, 2*slowerFactor)),
-        (34*slowerFactor,    2,      Goto(x0, y2, 0.5, 2*slowerFactor)),
-        (34*slowerFactor,    3,      Goto(x0, y3, 0.5, 2*slowerFactor)),
-        (34*slowerFactor,    4,      Goto(x1, y1, 0.5, 2*slowerFactor)),
-        (34*slowerFactor,    5,      Goto(x1, y2, 0.5, 2*slowerFactor)),
-        (34*slowerFactor,    6,      Goto(x2, y0, 0.5, 2*slowerFactor)),
-        (34*slowerFactor,    7,      Goto(x2, y1, 0.5, 2*slowerFactor)),
-        (34*slowerFactor,    8,      Goto(x2, y2, 0.5, 2*slowerFactor)),
-        (34*slowerFactor,    9,      Goto(x2, y3, 0.5, 2*slowerFactor)),
+        (2*slowerFactor,    0,      Goto(x1, y1, 1+baseHeight, 2*slowerFactor)),
+        (2*slowerFactor,    1,      Goto(x1, y2, 1+baseHeight, 2*slowerFactor)),
+        (2*slowerFactor,    2,      Goto(x2, y2, 1+baseHeight, 2*slowerFactor)),
+        (2*slowerFactor,    3,      Goto(x2, y1, 1+baseHeight, 2*slowerFactor)),
+        #Move forward
+        (4*slowerFactor,    0,      Goto(x1+1, y1, 1+baseHeight, 2*slowerFactor)),
+        (4*slowerFactor,    1,      Goto(x1+1, y2, 1+baseHeight, 2*slowerFactor)),
+        (4*slowerFactor,    2,      Goto(x2+1, y2, 1+baseHeight, 2*slowerFactor)),
+        (4*slowerFactor,    3,      Goto(x2+1, y1, 1+baseHeight, 2*slowerFactor)),
+        #Move Right
+        (6*slowerFactor,    0,      Goto(x1+1, y1-1, 1+baseHeight, 2*slowerFactor)),
+        (6*slowerFactor,    1,      Goto(x1+1, y2-1, 1+baseHeight, 2*slowerFactor)),
+        (6*slowerFactor,    2,      Goto(x2+1, y2-1, 1+baseHeight, 2*slowerFactor)),
+        (6*slowerFactor,    3,      Goto(x2+1, y1-1, 1+baseHeight, 2*slowerFactor)),
+        #Move Back
+        (8*slowerFactor,    0,      Goto(x1, y1-1, 1+baseHeight, 2*slowerFactor)),
+        (8*slowerFactor,    1,      Goto(x1, y2-1, 1+baseHeight, 2*slowerFactor)),
+        (8*slowerFactor,    2,      Goto(x2, y2-1, 1+baseHeight, 2*slowerFactor)),
+        (8*slowerFactor,    3,      Goto(x2, y1-1, 1+baseHeight, 2*slowerFactor)),
+        #Move Left
+        (10*slowerFactor,    0,      Goto(x1, y1, 1+baseHeight, 2*slowerFactor)),
+        (10*slowerFactor,    1,      Goto(x1, y2, 1+baseHeight, 2*slowerFactor)),
+        (10*slowerFactor,    2,      Goto(x2, y2, 1+baseHeight, 2*slowerFactor)),
+        (10*slowerFactor,    3,      Goto(x2, y1, 1+baseHeight, 2*slowerFactor)),
+        #Go Down
+        (12*slowerFactor,    0,      Goto(x1, y1, baseHeight, 2*slowerFactor)),
+        (12*slowerFactor,    1,      Goto(x1, y2, baseHeight, 2*slowerFactor)),
+        (12*slowerFactor,    2,      Goto(x2, y2, baseHeight, 2*slowerFactor)),
+        (12*slowerFactor,    3,      Goto(x2, y1, baseHeight, 2*slowerFactor)),
         #Landing Step 3 final Land
-        (36*slowerFactor,    0,      Land(2)),
-        (36*slowerFactor,    1,      Land(2)),
-        (36*slowerFactor,    2,      Land(2)),
-        (36*slowerFactor,    3,      Land(2)),
-        (36*slowerFactor,    4,      Land(2)),
-        (36*slowerFactor,    5,      Land(2)),
-        (36*slowerFactor,    6,      Land(2)),
-        (36*slowerFactor,    7,      Land(2)),
-        (36*slowerFactor,    8,      Land(2)),
-        (36*slowerFactor,    9,      Land(2)),
+        (14*slowerFactor,    0,      Land(2)),
+        (14*slowerFactor,    1,      Land(2)),
+        (14*slowerFactor,    2,      Land(2)),
+        (14*slowerFactor,    3,      Land(2)),
+
     ]
 
 
