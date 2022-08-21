@@ -48,7 +48,7 @@ y3  X               X
 
             ^ Y
             |
-y2  A       5       X
+y2  A       F       X
             |
 [my desk]   +------> X
 
@@ -88,8 +88,8 @@ sequence = 0
 
 if False: #swith one or all
     uris = [
-    'radio://0/80/2M/E7E7E7E703', #0
-    #'radio://1/60/2M/E7E7E7E705', #0
+    #'radio://0/80/2M/E7E7E7E703', #0
+    'radio://1/60/2M/E7E7E7E70F', #0
     #'radio://2/40/2M/E7E7E7E70A', #0
     #'radio://3/20/2M/E7E7E7E70C', #0
     ]
@@ -110,7 +110,7 @@ if False: #swith one or all
 else:
     uris = [#maximum of 3 per CrazyRadio -> you need at least 4 CrazyRadios on different channels
     'radio://0/80/2M/E7E7E7E703', #0
-    'radio://1/60/2M/E7E7E7E705', #1
+    'radio://1/60/2M/E7E7E7E70F', #1
     'radio://2/40/2M/E7E7E7E70A', #2
     'radio://3/20/2M/E7E7E7E70C', #3
     ]
