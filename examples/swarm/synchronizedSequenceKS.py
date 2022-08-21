@@ -86,7 +86,7 @@ Quit = namedtuple('Quit', [])
 uris = 0
 sequence = 0
 
-if True: #swith one or all
+if False: #swith one or all
     uris = [
     'radio://0/80/2M/E7E7E7E70F', #0
     ]
@@ -107,8 +107,8 @@ if True: #swith one or all
 else:
     uris = [#maximum of 3 per CrazyRadio -> you need at least 4 CrazyRadios on different channels
     'radio://0/80/2M/E7E7E7E701', #0
-    'radio://0/80/2M/E7E7E7E703', #1
-    'radio://0/80/2M/E7E7E7E704', #2
+    'radio://0/80/2M/E7E7E7E702', #1
+    'radio://0/80/2M/E7E7E7E703', #2
     'radio://1/60/2M/E7E7E7E705', #3
     'radio://1/60/2M/E7E7E7E706', #4
     'radio://1/60/2M/E7E7E7E708', #5

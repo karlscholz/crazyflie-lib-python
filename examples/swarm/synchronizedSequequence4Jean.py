@@ -108,14 +108,14 @@ if False: #swith one or all
         (34,   0,      Land(2)),
     ]
 else:
+    slowerFactor = 2
+    baseHeight = 0.5
     uris = [#maximum of 3 per CrazyRadio -> you need at least 4 CrazyRadios on different channels
     'radio://0/80/2M/E7E7E7E703', #0
     'radio://1/60/2M/E7E7E7E70F', #1
-    'radio://2/40/2M/E7E7E7E70A', #2
+    #'radio://2/40/2M/E7E7E7E70A', #2
     'radio://3/20/2M/E7E7E7E70C', #3
     ]
-    slowerFactor = 2
-    baseHeight = 0.5
     sequence = [
         # Step, CF_id,  action
         #Takeoff
