@@ -115,7 +115,7 @@ else:
     'radio://2/40/2M/E7E7E7E709', #6
     'radio://2/40/2M/E7E7E7E70A', #7
     'radio://2/40/2M/E7E7E7E70B', #8
-    'radio://3/20/2M/E7E7E7E70C', #9
+    'radio://2/40/2M/E7E7E7E70C', #9
     ]
     slowerFactor = 2
     baseHeight = 0.5
