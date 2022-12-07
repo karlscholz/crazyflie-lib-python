@@ -58,43 +58,20 @@ if __name__ == '__main__':
 
             # There is a set of functions that move a specific distance
             # We can move in all directions
-            mc.forward(0.8)
-            mc.back(0.8)
-            time.sleep(1)
-
-            mc.up(0.5)
-            mc.down(0.5)
-            time.sleep(1)
-
-            # We can also set the velocity
-            mc.right(0.5, velocity=0.8)
-            time.sleep(1)
-            mc.left(0.5, velocity=0.4)
-            time.sleep(1)
-
-            # We can do circles or parts of circles
-            mc.circle_right(0.5, velocity=0.5, angle_degrees=180)
-
-            # Or turn
-            mc.turn_left(90)
-            time.sleep(1)
-
-            # We can move along a line in 3D space
-            mc.move_distance(-1, 0.0, 0.5, velocity=0.6)
-            time.sleep(1)
-            mc.turn_left(90)
-            mc.back(0.8)
-            # There is also a set of functions that start a motion. The
-            # Crazyflie will keep on going until it gets a new command.
-
-            mc.start_left(velocity=0.5)
-            # The motion is started and we can do other stuff, printing for
-            # instance
-            for _ in range(5):
-                print('Doing other work')
-                time.sleep(0.1)
-
-            # And we can stop
+            DELAY = 4
+            time.sleep(10)
+            mc.forward(2)
+            time.sleep(DELAY)
+            mc.up(1)
+            time.sleep(DELAY)
+            mc.left(1)
+            time.sleep(DELAY)
+            mc.back(2)
+            time.sleep(DELAY)
+            mc.right(1)
+            time.sleep(DELAY)
+            mc.down(1)
+            time.sleep(DELAY)
             mc.stop()
 
             # We land when the MotionCommander goes out of scope
