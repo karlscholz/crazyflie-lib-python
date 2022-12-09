@@ -51,7 +51,7 @@ class PositionHlCommander:
                  default_velocity=0.5,
                  default_height=0.5,
                  controller=None,
-                 default_landing_height=0.0):
+                 default_landing_height=0.0, heading=0.0):
         """
         Construct an instance of a PositionHlCommander
 
@@ -80,6 +80,7 @@ class PositionHlCommander:
         self._x = x
         self._y = y
         self._z = z
+        self._heading = heading
 
         self._is_flying = False
 
@@ -226,6 +227,24 @@ class PositionHlCommander:
         z = self._z + distance_z_m
 
         self.go_to(x, y, z, velocity)
+
+    def yaw(self, yaw=0.0, duration_s = 1.0):
+        """
+        yaw on position
+        :param yaw: The yaw angle (degrees)
+        :return:
+        """
+        x = self._x
+        y = self._y
+        z = self._z
+        yaw = self._heading + yaw
+
+        z = self._height(z)
+        
+        self._hl_commander.go_to(x, y, z, yaw, duration_s)
+        time.sleep(duration_s)
+
+        self._heading = yaw
 
     def go_to(self, x, y, z=DEFAULT, velocity=DEFAULT):
         """
