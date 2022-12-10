@@ -222,8 +222,8 @@ class PositionHlCommander:
         :return:
         """
 
-        x = self._x + distance_x_m
-        y = self._y + distance_y_m
+        x = self._x + distance_x_m*math.cos(self._heading) + distance_y_m*math.sin(self._heading)
+        y = self._y + distance_y_m*math.cos(self._heading) + distance_x_m*math.sin(self._heading)
         z = self._z + distance_z_m
 
         self.go_to(x, y, z, velocity)
@@ -266,7 +266,7 @@ class PositionHlCommander:
 
         if distance > 0.0:
             duration_s = distance / self._velocity(velocity)
-            self._hl_commander.go_to(x, y, z, 0, duration_s)
+            self._hl_commander.go_to(x, y, z, self._heading, duration_s)
             time.sleep(duration_s)
 
             self._x = x
