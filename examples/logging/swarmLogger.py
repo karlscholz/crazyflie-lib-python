@@ -50,11 +50,12 @@ rlCoordinates = np.array([
     ], dtype = float)
 
 # List of URIs, comment the one you do not want to fly
+#CHECK THE USB DEVICE NUMBER IF YOU'RE USING IT WITH CFCLIENT
 uris = {
-    'radio://0/80/2M/E7E7E7E7E0',
-    'radio://0/80/2M/E7E7E7E7E1',
-    'radio://0/80/2M/E7E7E7E7E2',
-    'radio://0/80/2M/E7E7E7E7E3',
+    #'radio://0/80/2M/E7E7E7E7E0', #comment out to be able to connect via cfclient
+    'radio://1/80/2M/E7E7E7E7E1', 
+    'radio://1/80/2M/E7E7E7E7E2',
+    'radio://1/80/2M/E7E7E7E7E3',
 }
 
 def wait_for_param_download(scf):
@@ -113,8 +114,18 @@ if __name__ == '__main__':
         plt.ion()
         d = 5
         while(True):
+            #while(True) not just for plot, but also to keep the programm running for the callback function
             plt.axis([-d, d, -d, d])
-            xCoord, yCoord = rlCoordinates.T
-            plt.scatter(xCoord,yCoord)
+            
+            E0XCoord, E0YCoord = rlCoordinates[0]
+            plt.scatter(E0XCoord,E0YCoord, color='black', label='E0')
+            E1XCoord, E1YCoord = rlCoordinates[1]
+            plt.scatter(E1XCoord,E1YCoord, color='red', label='E1')
+            E2XCoord, E2YCoord = rlCoordinates[2]
+            plt.scatter(E2XCoord,E2YCoord, color='green', label='E2')
+            E3XCoord, E3YCoord = rlCoordinates[3]
+            plt.scatter(E3XCoord,E3YCoord, color='blue', label='E3')
+            
+            plt.legend()
             plt.pause(.32)
             plt.clf()
