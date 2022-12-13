@@ -34,6 +34,11 @@ import logging
 import csv
 import datetime
 
+import os
+desktopPath = os.path.join(os.path.join(os.environ['USERPROFILE']), 'Desktop')+"\\" # Get the desktop path on WINDOWS
+
+timestampProgramStart = datetime.datetime.now().strftime('%Y-%m-%d_%H-%M-%S')
+
 
 # List of URIs, comment the one you do not want to fly
 uris = {
@@ -46,31 +51,32 @@ uris = {
 def wait_for_param_download(scf):
     while not scf.cf.param.is_updated:
         time.sleep(1.0)
-    print('Parameters downloaded for', scf.cf.link_uri)
+    print(f"Parameters downloaded for{scf.cf.link_uri}")
 
 def position_callback(uri, timestamp, data, logconf):
-
     x = data['kalman.stateX']
     y = data['kalman.stateY']
     z = data['kalman.stateZ']
-    print('pos: ({},{},{})'.format(x, y, z))
-    with open('/home/' +datetime.datetime.now().strftime('%Y-%m-%d-%H_')+'Callback_position.csv', 'a') as csvfile:
+    #print('{}: pos: ({},{},{}) for {}'.format(timestamp, x, y, z, uri))
+    with open(desktopPath+timestampProgramStart+'_cf-swarm_positions.csv', 'a') as csvfile:
         writer = csv.writer(csvfile,delimiter=',')
         writer.writerow([timestamp, uri, x, y, z])
     csvfile.close()
 
 def start_position_printing(scf):
    
-    if scf.cf.link_uri == 'radio://0/80/2M':
+    #if scf.cf.link_uri == 'radio://0/80/2M':
            
-        log_conf = LogConfig(name='Position', period_in_ms=500)
-        log_conf.add_variable('kalman.stateX', 'float')
-        log_conf.add_variable('kalman.stateY', 'float')
-        log_conf.add_variable('kalman.stateZ', 'float')
+    log_conf = LogConfig(name='Position', period_in_ms=500)
+    log_conf.add_variable('kalman.stateX', 'float')
+    log_conf.add_variable('kalman.stateY', 'float')
+    log_conf.add_variable('kalman.stateZ', 'float')
 
-        scf.cf.log.add_config(log_conf)
-        log_conf.data_received_cb.add_callback(lambda t, d, l: position_callback(scf.cf.link_uri, t, d, l))
-        log_conf.start()
+    scf.cf.log.add_config(log_conf)
+    log_conf.data_received_cb.add_callback(lambda t, d, l: position_callback(scf.cf.link_uri, t, d, l))
+    log_conf.start()
+    print(f"Logging started for {scf.cf.link_uri}")
+    
 
 if __name__ == '__main__':
     # logging.basicConfig(level=logging.DEBUG)
@@ -90,6 +96,8 @@ if __name__ == '__main__':
         # flying.
         print('Waiting for parameters to be downloaded...')
         swarm.parallel(wait_for_param_download)
-
         swarm.parallel(start_position_printing)
+        print("logging...")
+        while(True):
+            pass
 
