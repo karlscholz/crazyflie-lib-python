@@ -38,7 +38,7 @@ import numpy as np
 from matplotlib import pyplot as plt
 
 import os
-desktopPath = os.path.join(os.path.join(os.environ['USERPROFILE']), 'Desktop')+"\\" # Get the desktop path on WINDOWS
+desktopPath = os.path.join(os.environ['USERPROFILE'])+"\\" # Get the desktop path on WINDOWS
 
 timestampProgramStart = datetime.datetime.now().strftime('%Y-%m-%d_%H-%M-%S')
 
