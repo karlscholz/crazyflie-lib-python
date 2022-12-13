@@ -34,11 +34,20 @@ import logging
 import csv
 import datetime
 
+import numpy as np
+from matplotlib import pyplot as plt
+
 import os
 desktopPath = os.path.join(os.path.join(os.environ['USERPROFILE']), 'Desktop')+"\\" # Get the desktop path on WINDOWS
 
 timestampProgramStart = datetime.datetime.now().strftime('%Y-%m-%d_%H-%M-%S')
 
+rlCoordinates = np.array([
+        [0, 0],
+        [0, 0],
+        [0, 0],
+        [0, 0],
+    ], dtype = float)
 
 # List of URIs, comment the one you do not want to fly
 uris = {
@@ -62,6 +71,9 @@ def position_callback(uri, timestamp, data, logconf):
         writer = csv.writer(csvfile,delimiter=',')
         writer.writerow([timestamp, uri, x, y, z])
     csvfile.close()
+
+    global rlCoordinates
+    rlCoordinates[int(uri[-1])] = [x,y]
 
 def start_position_printing(scf):
    
@@ -98,6 +110,11 @@ if __name__ == '__main__':
         swarm.parallel(wait_for_param_download)
         swarm.parallel(start_position_printing)
         print("logging...")
+        plt.ion()
+        d = 5
         while(True):
-            pass
-
+            plt.axis([-d, d, -d, d])
+            xCoord, yCoord = rlCoordinates.T
+            plt.scatter(xCoord,yCoord)
+            plt.pause(.32)
+            plt.clf()
