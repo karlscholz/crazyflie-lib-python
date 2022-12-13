@@ -54,9 +54,9 @@ def wait_for_param_download(scf):
     print(f"Parameters downloaded for{scf.cf.link_uri}")
 
 def position_callback(uri, timestamp, data, logconf):
-    x = data['kalman.stateX']
-    y = data['kalman.stateY']
-    z = data['kalman.stateZ']
+    x = data['my_RL_POS.myRLX']
+    y = data['my_RL_POS.myRLY']
+    z = data['my_RL_POS.myRLYaw']
     #print('{}: pos: ({},{},{}) for {}'.format(timestamp, x, y, z, uri))
     with open(desktopPath+timestampProgramStart+'_cf-swarm_positions.csv', 'a') as csvfile:
         writer = csv.writer(csvfile,delimiter=',')
@@ -67,10 +67,10 @@ def start_position_printing(scf):
    
     #if scf.cf.link_uri == 'radio://0/80/2M':
            
-    log_conf = LogConfig(name='Position', period_in_ms=500)
-    log_conf.add_variable('kalman.stateX', 'float')
-    log_conf.add_variable('kalman.stateY', 'float')
-    log_conf.add_variable('kalman.stateZ', 'float')
+    log_conf = LogConfig(name='rlPosition', period_in_ms=500)
+    log_conf.add_variable('my_RL_POS.myRLX', 'float')
+    log_conf.add_variable('my_RL_POS.myRLY', 'float')
+    log_conf.add_variable('my_RL_POS.myRLYaw', 'float')
 
     scf.cf.log.add_config(log_conf)
     log_conf.data_received_cb.add_callback(lambda t, d, l: position_callback(scf.cf.link_uri, t, d, l))
