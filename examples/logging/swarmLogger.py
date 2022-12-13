@@ -37,10 +37,10 @@ import datetime
 
 # List of URIs, comment the one you do not want to fly
 uris = {
-    'radio://0/70/2M/E7E7E7E7E0',
-    'radio://0/70/2M/E7E7E7E7E1',
-    'radio://0/70/2M/E7E7E7E7E2',
-    'radio://0/70/2M/E7E7E7E7E3',
+    'radio://0/80/2M/E7E7E7E7E0',
+    'radio://0/80/2M/E7E7E7E7E1',
+    'radio://0/80/2M/E7E7E7E7E2',
+    'radio://0/80/2M/E7E7E7E7E3',
 }
 
 def wait_for_param_download(scf):
