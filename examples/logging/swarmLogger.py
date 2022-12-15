@@ -118,7 +118,7 @@ if __name__ == '__main__':
         d = 5
         while(True):
             #while(True) not just for plot, but also to keep the programm running for the callback function
-            plt.axis([-d, d, -d, d])
+            plt.axis([d, -d, -d, d]) # horizontal axis is inverted, cause Y axis of aircraft increases to the left when X goes forward and Z up
             
             E0XCoord, E0YCoord = rlCoordinates[0]
             plt.scatter(E0XCoord,E0YCoord, color='black', label='E0')
