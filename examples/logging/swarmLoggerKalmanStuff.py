@@ -71,32 +71,34 @@ def position_callback(uri, timestamp, data, logconf):
     y = data['my_RL_POS.myRLY']
     z = data['my_RL_POS.myRLYaw']
 
-    rlP00 = data['AA_RL.rlP00']
-    rlP01 = data['AA_RL.rlP01']
-    rlP02 = data['AA_RL.rlP02']
-    rlP10 = data['AA_RL.rlP10']
-    rlP11 = data['AA_RL.rlP11']
-    rlP12 = data['AA_RL.rlP12']
-    rlP20 = data['AA_RL.rlP20']
-    rlP21 = data['AA_RL.rlP21']
-    rlP22 = data['AA_RL.rlP22']
-    rlXp0 = data['AA_RL.rlXp0']
-    rlYp0 = data['AA_RL.rlYp0']
-    rlYa0 = data['AA_RL.rlYa0']
-    rlXp1 = data['AA_RL.rlXp1']
-    rlYp1 = data['AA_RL.rlYp1']
-    rlYa1 = data['AA_RL.rlYa1']
+    rlP00 = data['RL_A.rlP00']
+    rlP01 = data['RL_A.rlP01']
+    rlP02 = data['RL_A.rlP02']
+    rlP10 = data['RL_A.rlP10']
+    rlP11 = data['RL_A.rlP11']
+    rlP12 = data['RL_A.rlP12']
 
-    update = data['AA_UWB.update']
-    distance = data['AA_UWB.distance']
-    velX = data['AA_UWB.velX']
-    velY = data['AA_UWB.velY']
-    gyroZ = data['AA_UWB.gyroZ']
-    height = data['AA_UWB.height']
-    myVelX = data['AA_UWB.myVelX']
-    myVelY = data['AA_UWB.myVelY']
-    myGyroZ = data['AA_UWB.myGyroZ']
-    myHeight = data['AA_UWB.myHeight']
+    rlP20 = data['RL_B.rlP20']
+    rlP21 = data['RL_B.rlP21']
+    rlP22 = data['RL_B.rlP22']
+    rlXp0 = data['RL_B.rlXp0']
+    rlYp0 = data['RL_B.rlYp0']
+    rlYa0 = data['RL_B.rlYa0']
+
+    rlXp1 = data['RL_C.rlXp1']
+    rlYp1 = data['RL_C.rlYp1']
+    rlYa1 = data['RL_C.rlYa1']
+
+    update = data['UWB_A.update']
+    distance = data['UWB_A.distance']
+    velX = data['UWB_A.velX']
+    velY = data['UWB_A.velY']
+    gyroZ = data['UWB_A.gyroZ']
+    height = data['UWB_A.height']
+    myVelX = data['UWB_B.myVelX']
+    myVelY = data['UWB_B.myVelY']
+    myGyroZ = data['UWB_B.myGyroZ']
+    myHeight = data['UWB_B.myHeight']
 
     #print('{}: pos: ({},{},{}) for {}'.format(timestamp, x, y, z, uri))
     with open(desktopPath+timestampProgramStart+'_cf-swarm_positions.csv', 'a') as csvfile:
@@ -111,46 +113,89 @@ def start_position_printing(scf):
    
     #if scf.cf.link_uri == 'radio://0/80/2M':
            
-    log_conf = LogConfig(name='Kalmanstuff', period_in_ms=500)
-    log_conf.add_variable('my_RL_POS.myRLX', 'float')
-    log_conf.add_variable('my_RL_POS.myRLY', 'float')
-    log_conf.add_variable('my_RL_POS.myRLYaw', 'float')
-
-    log_conf.add_variable('AA_RL.rlP00', 'float')
-    log_conf.add_variable('AA_RL.rlP01', 'float')
-    log_conf.add_variable('AA_RL.rlP02', 'float')
-    log_conf.add_variable('AA_RL.rlP10', 'float')
-    log_conf.add_variable('AA_RL.rlP11', 'float')
-    log_conf.add_variable('AA_RL.rlP12', 'float')
-    log_conf.add_variable('AA_RL.rlP20', 'float')
-    log_conf.add_variable('AA_RL.rlP21', 'float')
-    log_conf.add_variable('AA_RL.rlP22', 'float')
-    log_conf.add_variable('AA_RL.rlXp0', 'float')
-    log_conf.add_variable('AA_RL.rlYp0', 'float')
-    log_conf.add_variable('AA_RL.rlYa0', 'float')
-    log_conf.add_variable('AA_RL.rlXp1', 'float')
-    log_conf.add_variable('AA_RL.rlYp1', 'float')
-    log_conf.add_variable('AA_RL.rlYa1', 'float')
+    pos_conf = LogConfig(name='pos_conf', period_in_ms=500)
+    pos_conf.add_variable('my_RL_POS.myRLX', 'float')
+    pos_conf.add_variable('my_RL_POS.myRLY', 'float')
+    pos_conf.add_variable('my_RL_POS.myRLYaw', 'float')
+    try:
+        scf.cf.log.add_config(pos_conf)
+        pos_conf.data_received_cb.add_callback(lambda t, d, l: position_callback(scf.cf.link_uri, t, d, l))
+        pos_conf.start()
+    except BaseException as e:
+        print(e)
     
-    log_conf.add_variable('AA_UWB.update', 'uint16')
-    log_conf.add_variable('AA_UWB.distance', 'uint16')
-    log_conf.add_variable('AA_UWB.velX', 'float')
-    log_conf.add_variable('AA_UWB.velY', 'float')
-    log_conf.add_variable('AA_UWB.gyroZ', 'float')
-    log_conf.add_variable('AA_UWB.height', 'float')
-    log_conf.add_variable('AA_UWB.myVelX', 'float')
-    log_conf.add_variable('AA_UWB.myVelY', 'float')
-    log_conf.add_variable('AA_UWB.myGyroZ', 'float')
-    log_conf.add_variable('AA_UWB.myHeight', 'float')
 
+    A_RL_conf = LogConfig(name='A_RL_conf', period_in_ms=500)
+    A_RL_conf.add_variable('RL_A.rlP00', 'float')
+    A_RL_conf.add_variable('RL_A.rlP01', 'float')
+    A_RL_conf.add_variable('RL_A.rlP02', 'float')
+    A_RL_conf.add_variable('RL_A.rlP10', 'float')
+    A_RL_conf.add_variable('RL_A.rlP11', 'float')
+    A_RL_conf.add_variable('RL_A.rlP12', 'float')
+    try:
+        scf.cf.log.add_config(A_RL_conf)
+        A_RL_conf.data_received_cb.add_callback(lambda t, d, l: position_callback(scf.cf.link_uri, t, d, l))
+        A_RL_conf.start()
+    except BaseException as e:
+        print(e)
+    
+    B_RL_conf = LogConfig(name='B_RL_conf', period_in_ms=500)
+    B_RL_conf.add_variable('RL_B.rlP20', 'float')
+    B_RL_conf.add_variable('RL_B.rlP21', 'float')
+    B_RL_conf.add_variable('RL_B.rlP22', 'float')
+    B_RL_conf.add_variable('RL_B.rlXp0', 'float')
+    B_RL_conf.add_variable('RL_B.rlYp0', 'float')
+    B_RL_conf.add_variable('RL_B.rlYa0', 'float')
+    try:
+        scf.cf.log.add_config(B_RL_conf)
+        B_RL_conf.data_received_cb.add_callback(lambda t, d, l: position_callback(scf.cf.link_uri, t, d, l))
+        B_RL_conf.start()
+    except BaseException as e:
+        print(e)
 
-    scf.cf.log.add_config(log_conf)
-    log_conf.data_received_cb.add_callback(lambda t, d, l: position_callback(scf.cf.link_uri, t, d, l))
-    log_conf.start()
+    C_RL_conf = LogConfig(name='C_RL_conf', period_in_ms=500)
+    C_RL_conf.add_variable('RL_C.rlXp1', 'float')
+    C_RL_conf.add_variable('RL_C.rlYp1', 'float')
+    C_RL_conf.add_variable('RL_C.rlYa1', 'float')
+    try:
+        scf.cf.log.add_config(B_RL_conf)
+        B_RL_conf.data_received_cb.add_callback(lambda t, d, l: position_callback(scf.cf.link_uri, t, d, l))
+        B_RL_conf.start()
+    except BaseException as e:
+        print(e)
+    
+    A_UWB_conf = LogConfig(name='UWB_conf', period_in_ms=500)
+    A_UWB_conf.add_variable('UWB_A.update', 'uint16_t')
+    A_UWB_conf.add_variable('UWB_A.distance', 'uint16_t')
+    A_UWB_conf.add_variable('UWB_A.velX', 'float')
+    A_UWB_conf.add_variable('UWB_A.velY', 'float')
+    A_UWB_conf.add_variable('UWB_A.gyroZ', 'float')
+    A_UWB_conf.add_variable('UWB_A.height', 'float')
+    try:
+        scf.cf.log.add_config(A_UWB_conf)
+        A_UWB_conf.data_received_cb.add_callback(lambda t, d, l: position_callback(scf.cf.link_uri, t, d, l))
+        A_UWB_conf.start()
+    except BaseException as e:
+        print(e)
+
+    B_UWB_conf = LogConfig(name='UWB_conf', period_in_ms=500)
+    B_UWB_conf.add_variable('UWB_B.myVelX', 'float')
+    B_UWB_conf.add_variable('UWB_B.myVelY', 'float')
+    B_UWB_conf.add_variable('UWB_B.myGyroZ', 'float')
+    B_UWB_conf.add_variable('UWB_B.myHeight', 'float')
+    try:
+        scf.cf.log.add_config(B_UWB_conf)
+        B_UWB_conf.data_received_cb.add_callback(lambda t, d, l: position_callback(scf.cf.link_uri, t, d, l))
+        B_UWB_conf.start()
+    except BaseException as e:
+        print(e)
+
+    print("Hey1 Jude")
+    
     print(f"Logging started for {scf.cf.link_uri}")
     with open(desktopPath+timestampProgramStart+'_cf-swarm_positions_rawdata.csv', 'a') as csvfile:
         writer = csv.writer(csvfile,delimiter=',')
-        writer.writerow("timestamp, uri, x, y, z, rlP00, rlP01, rlP02, rlP10, rlP11, rlP12, rlP20, rlP21, rlP22, rlXp0, rlYp0, rlYa0, rlXp1, rlYp1, rlYa1, update, distance, velX, velY, gyroZ, height, myVelX, myVelY, myGyroZ, myHeight")
+        writer.writerow(["timestamp", "uri", "x", "y", "z", "rlP00", "rlP01", "rlP02", "rlP10", "rlP11", "rlP12", "rlP20", "rlP21", "rlP22", "rlXp0", "rlYp0", "rlYa0", "rlXp1", "rlYp1", "rlYa1", "update", "distance", "velX", "velY", "gyroZ", "height", "myVelX", "myVelY", "myGyroZ", "myHeight"])
     csvfile.close()
     
 
