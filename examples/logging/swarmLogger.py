@@ -57,8 +57,8 @@ rlCoordinates = np.array([
 uris = {
     #'radio://0/80/2M/E7E7E7E7E0', #comment out to be able to connect via cfclient
     'radio://1/80/2M/E7E7E7E7E1', 
-    'radio://1/80/2M/E7E7E7E7E2',
-    'radio://1/80/2M/E7E7E7E7E3',
+    #'radio://1/80/2M/E7E7E7E7E2',
+    #'radio://1/80/2M/E7E7E7E7E3',
 }
 
 def wait_for_param_download(scf):

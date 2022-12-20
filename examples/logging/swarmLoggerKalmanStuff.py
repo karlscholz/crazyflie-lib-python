@@ -67,37 +67,41 @@ def wait_for_param_download(scf):
     print(f"Parameters downloaded for{scf.cf.link_uri}")
 
 def position_callback(uri, timestamp, data, logconf):
-    rlP00 = data['AA_relativelocalization.rlP00']
-    rlP01 = data['AA_relativelocalization.rlP01']
-    rlP02 = data['AA_relativelocalization.rlP02']
-    rlP10 = data['AA_relativelocalization.rlP10']
-    rlP11 = data['AA_relativelocalization.rlP11']
-    rlP12 = data['AA_relativelocalization.rlP12']
-    rlP20 = data['AA_relativelocalization.rlP20']
-    rlP21 = data['AA_relativelocalization.rlP21']
-    rlP22 = data['AA_relativelocalization.rlP22']
-    rlXp0 = data['AA_relativelocalization.rlXp0']
-    rlYp0 = data['AA_relativelocalization.rlYp0']
-    rlYa0 = data['AA_relativelocalization.rlYa0']
-    rlXp1 = data['AA_relativelocalization.rlXp1']
-    rlYp1 = data['AA_relativelocalization.rlYp1']
-    rlYa1 = data['AA_relativelocalization.rlYa1']
+    x = data['my_RL_POS.myRLX']
+    y = data['my_RL_POS.myRLY']
+    z = data['my_RL_POS.myRLYaw']
 
-    update = data['AA_ranging.update']
-    distance = data['AA_ranging.distance']
-    velX = data['AA_ranging.velX']
-    velY = data['AA_ranging.velY']
-    gyroZ = data['AA_ranging.gyroZ']
-    height = data['AA_ranging.height']
-    myVelX = data['AA_ranging.myVelX']
-    myVelY = data['AA_ranging.myVelY']
-    myGyroZ = data['AA_ranging.myGyroZ']
-    myHeight = data['AA_ranging.myHeight']
+    rlP00 = data['AA_RL.rlP00']
+    rlP01 = data['AA_RL.rlP01']
+    rlP02 = data['AA_RL.rlP02']
+    rlP10 = data['AA_RL.rlP10']
+    rlP11 = data['AA_RL.rlP11']
+    rlP12 = data['AA_RL.rlP12']
+    rlP20 = data['AA_RL.rlP20']
+    rlP21 = data['AA_RL.rlP21']
+    rlP22 = data['AA_RL.rlP22']
+    rlXp0 = data['AA_RL.rlXp0']
+    rlYp0 = data['AA_RL.rlYp0']
+    rlYa0 = data['AA_RL.rlYa0']
+    rlXp1 = data['AA_RL.rlXp1']
+    rlYp1 = data['AA_RL.rlYp1']
+    rlYa1 = data['AA_RL.rlYa1']
+
+    update = data['AA_UWB.update']
+    distance = data['AA_UWB.distance']
+    velX = data['AA_UWB.velX']
+    velY = data['AA_UWB.velY']
+    gyroZ = data['AA_UWB.gyroZ']
+    height = data['AA_UWB.height']
+    myVelX = data['AA_UWB.myVelX']
+    myVelY = data['AA_UWB.myVelY']
+    myGyroZ = data['AA_UWB.myGyroZ']
+    myHeight = data['AA_UWB.myHeight']
 
     #print('{}: pos: ({},{},{}) for {}'.format(timestamp, x, y, z, uri))
     with open(desktopPath+timestampProgramStart+'_cf-swarm_positions.csv', 'a') as csvfile:
         writer = csv.writer(csvfile,delimiter=',')
-        writer.writerow([timestamp, uri, rlP00, rlP01, rlP02, rlP10, rlP11, rlP12, rlP20, rlP21, rlP22, rlXp0, rlYp0, rlYa0, rlXp1, rlYp1, rlYa1, update, distance, velX, velY, gyroZ, height, myVelX, myVelY, myGyroZ, myHeight])
+        writer.writerow([timestamp, uri, x, y, z, rlP00, rlP01, rlP02, rlP10, rlP11, rlP12, rlP20, rlP21, rlP22, rlXp0, rlYp0, rlYa0, rlXp1, rlYp1, rlYa1, update, distance, velX, velY, gyroZ, height, myVelX, myVelY, myGyroZ, myHeight])
     csvfile.close()
 
     global rlCoordinates
@@ -108,41 +112,45 @@ def start_position_printing(scf):
     #if scf.cf.link_uri == 'radio://0/80/2M':
            
     log_conf = LogConfig(name='Kalmanstuff', period_in_ms=500)
-    log_conf.add_variable('AA_relativelocalization.rlP00', 'float')
-    log_conf.add_variable('AA_relativelocalization.rlP01', 'float')
-    log_conf.add_variable('AA_relativelocalization.rlP02', 'float')
-    log_conf.add_variable('AA_relativelocalization.rlP10', 'float')
-    log_conf.add_variable('AA_relativelocalization.rlP11', 'float')
-    log_conf.add_variable('AA_relativelocalization.rlP12', 'float')
-    log_conf.add_variable('AA_relativelocalization.rlP20', 'float')
-    log_conf.add_variable('AA_relativelocalization.rlP21', 'float')
-    log_conf.add_variable('AA_relativelocalization.rlP22', 'float')
-    log_conf.add_variable('AA_relativelocalization.rlXp0', 'float')
-    log_conf.add_variable('AA_relativelocalization.rlYp0', 'float')
-    log_conf.add_variable('AA_relativelocalization.rlYa0', 'float')
-    log_conf.add_variable('AA_relativelocalization.rlXp1', 'float')
-    log_conf.add_variable('AA_relativelocalization.rlYp1', 'float')
-    log_conf.add_variable('AA_relativelocalization.rlYa1', 'float')
+    log_conf.add_variable('my_RL_POS.myRLX', 'float')
+    log_conf.add_variable('my_RL_POS.myRLY', 'float')
+    log_conf.add_variable('my_RL_POS.myRLYaw', 'float')
+
+    log_conf.add_variable('AA_RL.rlP00', 'float')
+    log_conf.add_variable('AA_RL.rlP01', 'float')
+    log_conf.add_variable('AA_RL.rlP02', 'float')
+    log_conf.add_variable('AA_RL.rlP10', 'float')
+    log_conf.add_variable('AA_RL.rlP11', 'float')
+    log_conf.add_variable('AA_RL.rlP12', 'float')
+    log_conf.add_variable('AA_RL.rlP20', 'float')
+    log_conf.add_variable('AA_RL.rlP21', 'float')
+    log_conf.add_variable('AA_RL.rlP22', 'float')
+    log_conf.add_variable('AA_RL.rlXp0', 'float')
+    log_conf.add_variable('AA_RL.rlYp0', 'float')
+    log_conf.add_variable('AA_RL.rlYa0', 'float')
+    log_conf.add_variable('AA_RL.rlXp1', 'float')
+    log_conf.add_variable('AA_RL.rlYp1', 'float')
+    log_conf.add_variable('AA_RL.rlYa1', 'float')
     
-    log_conf.add_variable('AA_ranging.update', 'uint16')
-    log_conf.add_variable('AA_ranging.distance', 'uint16')
-    log_conf.add_variable('AA_ranging.velX', 'float')
-    log_conf.add_variable('AA_ranging.velY', 'float')
-    log_conf.add_variable('AA_ranging.gyroZ', 'float')
-    log_conf.add_variable('AA_ranging.height', 'float')
-    log_conf.add_variable('AA_ranging.myVelX', 'float')
-    log_conf.add_variable('AA_ranging.myVelY', 'float')
-    log_conf.add_variable('AA_ranging.myGyroZ', 'float')
-    log_conf.add_variable('AA_ranging.myHeight', 'float')
+    log_conf.add_variable('AA_UWB.update', 'uint16')
+    log_conf.add_variable('AA_UWB.distance', 'uint16')
+    log_conf.add_variable('AA_UWB.velX', 'float')
+    log_conf.add_variable('AA_UWB.velY', 'float')
+    log_conf.add_variable('AA_UWB.gyroZ', 'float')
+    log_conf.add_variable('AA_UWB.height', 'float')
+    log_conf.add_variable('AA_UWB.myVelX', 'float')
+    log_conf.add_variable('AA_UWB.myVelY', 'float')
+    log_conf.add_variable('AA_UWB.myGyroZ', 'float')
+    log_conf.add_variable('AA_UWB.myHeight', 'float')
 
 
     scf.cf.log.add_config(log_conf)
     log_conf.data_received_cb.add_callback(lambda t, d, l: position_callback(scf.cf.link_uri, t, d, l))
     log_conf.start()
     print(f"Logging started for {scf.cf.link_uri}")
-    with open(desktopPath+timestampProgramStart+'_cf-swarm_positions.csv', 'a') as csvfile:
+    with open(desktopPath+timestampProgramStart+'_cf-swarm_positions_rawdata.csv', 'a') as csvfile:
         writer = csv.writer(csvfile,delimiter=',')
-        writer.writerow("timestamp, uri, rlP00, rlP01, rlP02, rlP10, rlP11, rlP12, rlP20, rlP21, rlP22, rlXp0, rlYp0, rlYa0, rlXp1, rlYp1, rlYa1, update, distance, velX, velY, gyroZ, height, myVelX, myVelY, myGyroZ, myHeight")
+        writer.writerow("timestamp, uri, x, y, z, rlP00, rlP01, rlP02, rlP10, rlP11, rlP12, rlP20, rlP21, rlP22, rlXp0, rlYp0, rlYa0, rlXp1, rlYp1, rlYa1, update, distance, velX, velY, gyroZ, height, myVelX, myVelY, myGyroZ, myHeight")
     csvfile.close()
     
 
