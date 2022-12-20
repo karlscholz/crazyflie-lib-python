@@ -45,6 +45,40 @@ desktopPath = os.path.join(os.environ['USERPROFILE'])+"\\" # Get the desktop pat
 
 timestampProgramStart = datetime.datetime.now().strftime('%Y-%m-%d_%H-%M-%S')
 
+x = 0
+y = 0
+z = 0
+
+rlP00 = 0
+rlP01 = 0
+rlP02 = 0
+rlP10 = 0
+rlP11 = 0
+rlP12 = 0
+
+rlP20 = 0
+rlP21 = 0
+rlP22 = 0
+rlXp0 = 0
+rlYp0 = 0
+rlYa0 = 0
+
+rlXp1 = 0
+rlYp1 = 0
+rlYa1 = 0
+
+update = 0
+distance = 0
+velX = 0
+velY = 0
+gyroZ =  0
+height = 0
+
+myVelX = 0
+myVelY = 0
+myGyroZ = 0
+myHeight = 0
+
 rlCoordinates = np.array([
         [0, 0],
         [0, 0],
@@ -66,10 +100,61 @@ def wait_for_param_download(scf):
         time.sleep(1.0)
     print(f"Parameters downloaded for{scf.cf.link_uri}")
 
-def position_callback(uri, timestamp, data, logconf):
+def pos_callback(uri, timestamp, data, logconf):
+    global x
+    global y
+    global z
+
+    global rlP00
+    global rlP01
+    global rlP02
+    global rlP10
+    global rlP11
+    global rlP12
+
+    global rlP20
+    global rlP21
+    global rlP22
+    global rlXp0
+    global rlYp0
+    global rlYa0
+
+    global rlXp1
+    global rlYp1
+    global rlYa1
+
+    global update
+    global distance
+    global velX
+    global velY
+    global gyroZ
+    global height
+
+    global myVelX
+    global myVelY
+    global myGyroZ 
+    global myHeight
+
     x = data['my_RL_POS.myRLX']
     y = data['my_RL_POS.myRLY']
     z = data['my_RL_POS.myRLYaw']
+    
+    #print('{}: pos: ({},{},{}) for {}'.format(timestamp, x, y, z, uri))
+    with open(desktopPath+timestampProgramStart+'_cf-swarm_kalman.csv', 'a', newline='') as csvfile:
+        writer = csv.writer(csvfile,delimiter=',')
+        writer.writerow([timestamp, uri, x, y, z, rlP00, rlP01, rlP02, rlP10, rlP11, rlP12, rlP20, rlP21, rlP22, rlXp0, rlYp0, rlYa0, rlXp1, rlYp1, rlYa1, update, distance, velX, velY, gyroZ, height, myVelX, myVelY, myGyroZ, myHeight])
+    csvfile.close()
+
+    global rlCoordinates
+    rlCoordinates[int(uri[-1])] = [x,y]
+
+def A_RL_callback(uri, timestamp, data, logconf):
+    global rlP00
+    global rlP01
+    global rlP02
+    global rlP10
+    global rlP11
+    global rlP12
 
     rlP00 = data['RL_A.rlP00']
     rlP01 = data['RL_A.rlP01']
@@ -78,6 +163,14 @@ def position_callback(uri, timestamp, data, logconf):
     rlP11 = data['RL_A.rlP11']
     rlP12 = data['RL_A.rlP12']
 
+def B_RL_callback(uri, timestamp, data, logconf):
+    global rlP20
+    global rlP21
+    global rlP22
+    global rlXp0
+    global rlYp0
+    global rlYa0
+
     rlP20 = data['RL_B.rlP20']
     rlP21 = data['RL_B.rlP21']
     rlP22 = data['RL_B.rlP22']
@@ -85,9 +178,22 @@ def position_callback(uri, timestamp, data, logconf):
     rlYp0 = data['RL_B.rlYp0']
     rlYa0 = data['RL_B.rlYa0']
 
+def C_RL_callback(uri, timestamp, data, logconf):
+    global rlXp1
+    global rlYp1
+    global rlYa1
+
     rlXp1 = data['RL_C.rlXp1']
     rlYp1 = data['RL_C.rlYp1']
     rlYa1 = data['RL_C.rlYa1']
+
+def A_UWB_callback(uri, timestamp, data, logconf):
+    global update
+    global distance
+    global velX
+    global velY
+    global gyroZ
+    global height
 
     update = data['UWB_A.update']
     distance = data['UWB_A.distance']
@@ -95,19 +201,17 @@ def position_callback(uri, timestamp, data, logconf):
     velY = data['UWB_A.velY']
     gyroZ = data['UWB_A.gyroZ']
     height = data['UWB_A.height']
+
+def B_UWB_callback(uri, timestamp, data, logconf):
+    global myVelX
+    global myVelY
+    global myGyroZ
+    global myHeight
+
     myVelX = data['UWB_B.myVelX']
     myVelY = data['UWB_B.myVelY']
     myGyroZ = data['UWB_B.myGyroZ']
     myHeight = data['UWB_B.myHeight']
-
-    #print('{}: pos: ({},{},{}) for {}'.format(timestamp, x, y, z, uri))
-    with open(desktopPath+timestampProgramStart+'_cf-swarm_positions.csv', 'a') as csvfile:
-        writer = csv.writer(csvfile,delimiter=',')
-        writer.writerow([timestamp, uri, x, y, z, rlP00, rlP01, rlP02, rlP10, rlP11, rlP12, rlP20, rlP21, rlP22, rlXp0, rlYp0, rlYa0, rlXp1, rlYp1, rlYa1, update, distance, velX, velY, gyroZ, height, myVelX, myVelY, myGyroZ, myHeight])
-    csvfile.close()
-
-    global rlCoordinates
-    rlCoordinates[int(uri[-1])] = [x,y]
 
 def start_position_printing(scf):
    
@@ -119,7 +223,7 @@ def start_position_printing(scf):
     pos_conf.add_variable('my_RL_POS.myRLYaw', 'float')
     try:
         scf.cf.log.add_config(pos_conf)
-        pos_conf.data_received_cb.add_callback(lambda t, d, l: position_callback(scf.cf.link_uri, t, d, l))
+        pos_conf.data_received_cb.add_callback(lambda t, d, l: pos_callback(scf.cf.link_uri, t, d, l))
         pos_conf.start()
     except BaseException as e:
         print(e)
@@ -134,7 +238,7 @@ def start_position_printing(scf):
     A_RL_conf.add_variable('RL_A.rlP12', 'float')
     try:
         scf.cf.log.add_config(A_RL_conf)
-        A_RL_conf.data_received_cb.add_callback(lambda t, d, l: position_callback(scf.cf.link_uri, t, d, l))
+        A_RL_conf.data_received_cb.add_callback(lambda t, d, l: A_RL_callback(scf.cf.link_uri, t, d, l))
         A_RL_conf.start()
     except BaseException as e:
         print(e)
@@ -148,7 +252,7 @@ def start_position_printing(scf):
     B_RL_conf.add_variable('RL_B.rlYa0', 'float')
     try:
         scf.cf.log.add_config(B_RL_conf)
-        B_RL_conf.data_received_cb.add_callback(lambda t, d, l: position_callback(scf.cf.link_uri, t, d, l))
+        B_RL_conf.data_received_cb.add_callback(lambda t, d, l: B_RL_callback(scf.cf.link_uri, t, d, l))
         B_RL_conf.start()
     except BaseException as e:
         print(e)
@@ -158,9 +262,9 @@ def start_position_printing(scf):
     C_RL_conf.add_variable('RL_C.rlYp1', 'float')
     C_RL_conf.add_variable('RL_C.rlYa1', 'float')
     try:
-        scf.cf.log.add_config(B_RL_conf)
-        B_RL_conf.data_received_cb.add_callback(lambda t, d, l: position_callback(scf.cf.link_uri, t, d, l))
-        B_RL_conf.start()
+        scf.cf.log.add_config(C_RL_conf)
+        C_RL_conf.data_received_cb.add_callback(lambda t, d, l: C_RL_callback(scf.cf.link_uri, t, d, l))
+        C_RL_conf.start()
     except BaseException as e:
         print(e)
     
@@ -173,7 +277,7 @@ def start_position_printing(scf):
     A_UWB_conf.add_variable('UWB_A.height', 'float')
     try:
         scf.cf.log.add_config(A_UWB_conf)
-        A_UWB_conf.data_received_cb.add_callback(lambda t, d, l: position_callback(scf.cf.link_uri, t, d, l))
+        A_UWB_conf.data_received_cb.add_callback(lambda t, d, l: A_UWB_callback(scf.cf.link_uri, t, d, l))
         A_UWB_conf.start()
     except BaseException as e:
         print(e)
@@ -185,18 +289,17 @@ def start_position_printing(scf):
     B_UWB_conf.add_variable('UWB_B.myHeight', 'float')
     try:
         scf.cf.log.add_config(B_UWB_conf)
-        B_UWB_conf.data_received_cb.add_callback(lambda t, d, l: position_callback(scf.cf.link_uri, t, d, l))
+        B_UWB_conf.data_received_cb.add_callback(lambda t, d, l: B_UWB_callback(scf.cf.link_uri, t, d, l))
         B_UWB_conf.start()
     except BaseException as e:
         print(e)
-
-    print("Hey1 Jude")
     
     print(f"Logging started for {scf.cf.link_uri}")
-    with open(desktopPath+timestampProgramStart+'_cf-swarm_positions_rawdata.csv', 'a') as csvfile:
+    with open(desktopPath+timestampProgramStart+'_cf-swarm_kalman.csv', 'a', newline='') as csvfile:
         writer = csv.writer(csvfile,delimiter=',')
         writer.writerow(["timestamp", "uri", "x", "y", "z", "rlP00", "rlP01", "rlP02", "rlP10", "rlP11", "rlP12", "rlP20", "rlP21", "rlP22", "rlXp0", "rlYp0", "rlYa0", "rlXp1", "rlYp1", "rlYa1", "update", "distance", "velX", "velY", "gyroZ", "height", "myVelX", "myVelY", "myGyroZ", "myHeight"])
     csvfile.close()
+    time.sleep(1)
     
 
 if __name__ == '__main__':
