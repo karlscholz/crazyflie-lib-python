@@ -45,40 +45,6 @@ desktopPath = os.path.join(os.environ['USERPROFILE'])+"\\" # Get the desktop pat
 
 timestampProgramStart = datetime.datetime.now().strftime('%Y-%m-%d_%H-%M-%S')
 
-x = 0
-y = 0
-z = 0
-
-rlP00 = 0
-rlP01 = 0
-rlP02 = 0
-rlP10 = 0
-rlP11 = 0
-rlP12 = 0
-
-rlP20 = 0
-rlP21 = 0
-rlP22 = 0
-rlXp0 = 0
-rlYp0 = 0
-rlYa0 = 0
-
-rlXp1 = 0
-rlYp1 = 0
-rlYa1 = 0
-
-update = 0
-distance = 0
-velX = 0
-velY = 0
-gyroZ =  0
-height = 0
-
-myVelX = 0
-myVelY = 0
-myGyroZ = 0
-myHeight = 0
-
 rlCoordinates = np.array([
         [0, 0],
         [0, 0],
@@ -101,40 +67,6 @@ def wait_for_param_download(scf):
     print(f"Parameters downloaded for{scf.cf.link_uri}")
 
 def pos_callback(uri, timestamp, data, logconf):
-    global x
-    global y
-    global z
-
-    global rlP00
-    global rlP01
-    global rlP02
-    global rlP10
-    global rlP11
-    global rlP12
-
-    global rlP20
-    global rlP21
-    global rlP22
-    global rlXp0
-    global rlYp0
-    global rlYa0
-
-    global rlXp1
-    global rlYp1
-    global rlYa1
-
-    global update
-    global distance
-    global velX
-    global velY
-    global gyroZ
-    global height
-
-    global myVelX
-    global myVelY
-    global myGyroZ 
-    global myHeight
-
     x = data['my_RL_POS.myRLX']
     y = data['my_RL_POS.myRLY']
     z = data['my_RL_POS.myRLYaw']
@@ -142,76 +74,66 @@ def pos_callback(uri, timestamp, data, logconf):
     #print('{}: pos: ({},{},{}) for {}'.format(timestamp, x, y, z, uri))
     with open(desktopPath+timestampProgramStart+'_cf-swarm_kalman.csv', 'a', newline='') as csvfile:
         writer = csv.writer(csvfile,delimiter=',')
-        writer.writerow([timestamp, uri, x, y, z, rlP00, rlP01, rlP02, rlP10, rlP11, rlP12, rlP20, rlP21, rlP22, rlXp0, rlYp0, rlYa0, rlXp1, rlYp1, rlYa1, update, distance, velX, velY, gyroZ, height, myVelX, myVelY, myGyroZ, myHeight])
+        writer.writerow([timestamp, uri, x, y, z, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None])
     csvfile.close()
 
     global rlCoordinates
     rlCoordinates[int(uri[-1])] = [x,y]
 
 def A_RL_callback(uri, timestamp, data, logconf):
-    global rlP00
-    global rlP01
-    global rlP02
-    global rlP10
-    global rlP11
-    global rlP12
-
     rlP00 = data['RL_A.rlP00']
     rlP01 = data['RL_A.rlP01']
     rlP02 = data['RL_A.rlP02']
     rlP10 = data['RL_A.rlP10']
     rlP11 = data['RL_A.rlP11']
     rlP12 = data['RL_A.rlP12']
+    with open(desktopPath+timestampProgramStart+'_cf-swarm_kalman.csv', 'a', newline='') as csvfile:
+        writer = csv.writer(csvfile,delimiter=',')
+        writer.writerow([timestamp, uri, None, None, None, rlP00, rlP01, rlP02, rlP10, rlP11, rlP12, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None])
+    csvfile.close()
 
 def B_RL_callback(uri, timestamp, data, logconf):
-    global rlP20
-    global rlP21
-    global rlP22
-    global rlXp0
-    global rlYp0
-    global rlYa0
-
     rlP20 = data['RL_B.rlP20']
     rlP21 = data['RL_B.rlP21']
     rlP22 = data['RL_B.rlP22']
     rlXp0 = data['RL_B.rlXp0']
     rlYp0 = data['RL_B.rlYp0']
     rlYa0 = data['RL_B.rlYa0']
+    with open(desktopPath+timestampProgramStart+'_cf-swarm_kalman.csv', 'a', newline='') as csvfile:
+        writer = csv.writer(csvfile,delimiter=',')
+        writer.writerow([timestamp, uri, None, None, None, None, None, None, None, None, None, rlP20, rlP21, rlP22, rlXp0, rlYp0, rlYa0, None, None, None, None, None, None, None, None, None, None, None, None, None])
+    csvfile.close()
 
 def C_RL_callback(uri, timestamp, data, logconf):
-    global rlXp1
-    global rlYp1
-    global rlYa1
-
     rlXp1 = data['RL_C.rlXp1']
     rlYp1 = data['RL_C.rlYp1']
     rlYa1 = data['RL_C.rlYa1']
+    with open(desktopPath+timestampProgramStart+'_cf-swarm_kalman.csv', 'a', newline='') as csvfile:
+        writer = csv.writer(csvfile,delimiter=',')
+        writer.writerow([timestamp, uri, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, rlXp1, rlYp1, rlYa1, None, None, None, None, None, None, None, None, None, None])
+    csvfile.close()
 
 def A_UWB_callback(uri, timestamp, data, logconf):
-    global update
-    global distance
-    global velX
-    global velY
-    global gyroZ
-    global height
-
     update = data['UWB_A.update']
     distance = data['UWB_A.distance']
     velX = data['UWB_A.velX']
     velY = data['UWB_A.velY']
     gyroZ = data['UWB_A.gyroZ']
     height = data['UWB_A.height']
+    with open(desktopPath+timestampProgramStart+'_cf-swarm_kalman.csv', 'a', newline='') as csvfile:
+        writer = csv.writer(csvfile,delimiter=',')
+        writer.writerow([timestamp, uri, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, update, distance, velX, velY, gyroZ, height, None, None, None, None])
+    csvfile.close()  
 
 def B_UWB_callback(uri, timestamp, data, logconf):
-    global myVelX
-    global myVelY
-    global myGyroZ
-    global myHeight
-
     myVelX = data['UWB_B.myVelX']
     myVelY = data['UWB_B.myVelY']
     myGyroZ = data['UWB_B.myGyroZ']
     myHeight = data['UWB_B.myHeight']
+    with open(desktopPath+timestampProgramStart+'_cf-swarm_kalman.csv', 'a', newline='') as csvfile:
+        writer = csv.writer(csvfile,delimiter=',')
+        writer.writerow([timestamp, uri, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, myVelX, myVelY, myGyroZ, myHeight])
+    csvfile.close()
 
 def start_position_printing(scf):
    
