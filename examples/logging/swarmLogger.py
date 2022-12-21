@@ -121,13 +121,13 @@ if __name__ == '__main__':
             plt.axis([d, -d, -d, d]) # horizontal axis is inverted, cause Y axis of aircraft increases to the left when X goes forward and Z up
             
             E0XCoord, E0YCoord = rlCoordinates[0]
-            plt.scatter(E0XCoord,E0YCoord, color='black', label='E0')
+            plt.scatter(E0YCoord,E0XCoord, color='black', label='E0')
             E1XCoord, E1YCoord = rlCoordinates[1]
-            plt.scatter(E1XCoord,E1YCoord, color='red', label='E1')
+            plt.scatter(E1YCoord,E1XCoord, color='red', label='E1')
             E2XCoord, E2YCoord = rlCoordinates[2]
-            plt.scatter(E2XCoord,E2YCoord, color='green', label='E2')
+            plt.scatter(E2YCoord,E2XCoord, color='green', label='E2')
             E3XCoord, E3YCoord = rlCoordinates[3]
-            plt.scatter(E3XCoord,E3YCoord, color='blue', label='E3')
+            plt.scatter(E3YCoord,E3XCoord, color='blue', label='E3')
             
             plt.legend()
             plt.pause(.32)
