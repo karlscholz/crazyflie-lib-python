@@ -138,8 +138,9 @@ def B_UWB_callback(uri, timestamp, data, logconf):
 def start_position_printing(scf):
    
     #if scf.cf.link_uri == 'radio://0/80/2M':
-           
-    pos_conf = LogConfig(name='pos_conf', period_in_ms=500)
+    LOGGING_PERIOD = 10
+
+    pos_conf = LogConfig(name='pos_conf', period_in_ms=LOGGING_PERIOD)
     pos_conf.add_variable('my_RL_POS.myRLX', 'float')
     pos_conf.add_variable('my_RL_POS.myRLY', 'float')
     pos_conf.add_variable('my_RL_POS.myRLYaw', 'float')
@@ -151,7 +152,7 @@ def start_position_printing(scf):
         print(e)
     
 
-    A_RL_conf = LogConfig(name='A_RL_conf', period_in_ms=500)
+    A_RL_conf = LogConfig(name='A_RL_conf', period_in_ms=LOGGING_PERIOD)
     A_RL_conf.add_variable('RL_A.rlP00', 'float')
     A_RL_conf.add_variable('RL_A.rlP01', 'float')
     A_RL_conf.add_variable('RL_A.rlP02', 'float')
@@ -165,7 +166,7 @@ def start_position_printing(scf):
     except BaseException as e:
         print(e)
     
-    B_RL_conf = LogConfig(name='B_RL_conf', period_in_ms=500)
+    B_RL_conf = LogConfig(name='B_RL_conf', period_in_ms=LOGGING_PERIOD)
     B_RL_conf.add_variable('RL_B.rlP20', 'float')
     B_RL_conf.add_variable('RL_B.rlP21', 'float')
     B_RL_conf.add_variable('RL_B.rlP22', 'float')
@@ -179,7 +180,7 @@ def start_position_printing(scf):
     except BaseException as e:
         print(e)
 
-    C_RL_conf = LogConfig(name='C_RL_conf', period_in_ms=500)
+    C_RL_conf = LogConfig(name='C_RL_conf', period_in_ms=LOGGING_PERIOD)
     C_RL_conf.add_variable('RL_C.rlXp1', 'float')
     C_RL_conf.add_variable('RL_C.rlYp1', 'float')
     C_RL_conf.add_variable('RL_C.rlYa1', 'float')
@@ -190,7 +191,7 @@ def start_position_printing(scf):
     except BaseException as e:
         print(e)
     
-    A_UWB_conf = LogConfig(name='UWB_conf', period_in_ms=500)
+    A_UWB_conf = LogConfig(name='UWB_conf', period_in_ms=LOGGING_PERIOD)
     A_UWB_conf.add_variable('UWB_A.update', 'uint16_t')
     A_UWB_conf.add_variable('UWB_A.distance', 'uint16_t')
     A_UWB_conf.add_variable('UWB_A.velX', 'float')
@@ -204,7 +205,7 @@ def start_position_printing(scf):
     except BaseException as e:
         print(e)
 
-    B_UWB_conf = LogConfig(name='UWB_conf', period_in_ms=500)
+    B_UWB_conf = LogConfig(name='UWB_conf', period_in_ms=LOGGING_PERIOD)
     B_UWB_conf.add_variable('UWB_B.myVelX', 'float')
     B_UWB_conf.add_variable('UWB_B.myVelY', 'float')
     B_UWB_conf.add_variable('UWB_B.myGyroZ', 'float')
