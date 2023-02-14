@@ -67,26 +67,27 @@ def wait_for_param_download(scf):
     print(f"Parameters downloaded for{scf.cf.link_uri}")
 
 def position_callback(uri, timestamp, data, logconf):
-    x = data['my_RL_POS.myRLX']
-    y = data['my_RL_POS.myRLY']
-    z = data['my_RL_POS.myRLYaw']
+    #negate Leader's Position to get my position in Leaders Reference Frame
+    my_x = -1*data['Lead_POS.LeadX']
+    my_y = -1*data['Lead_POS.LeadY']
+    my_z = -1*data['Lead_POS.LeadYaw']
     #print('{}: pos: ({},{},{}) for {}'.format(timestamp, x, y, z, uri))
     with open(desktopPath+timestampProgramStart+'_cf-swarm_positions.csv', 'a') as csvfile:
         writer = csv.writer(csvfile,delimiter=',')
-        writer.writerow([timestamp, uri, x, y, z])
+        writer.writerow([timestamp, uri, my_x, my_y, my_z])
     csvfile.close()
 
     global rlCoordinates
-    rlCoordinates[int(uri[-1])] = [x,y]
+    rlCoordinates[int(uri[-1])] = [my_x,my_y]
 
 def start_position_printing(scf):
    
     #if scf.cf.link_uri == 'radio://0/80/2M':
            
-    log_conf = LogConfig(name='rlPosition', period_in_ms=500)
-    log_conf.add_variable('my_RL_POS.myRLX', 'float')
-    log_conf.add_variable('my_RL_POS.myRLY', 'float')
-    log_conf.add_variable('my_RL_POS.myRLYaw', 'float')
+    log_conf = LogConfig(name='Lead_POS', period_in_ms=500)
+    log_conf.add_variable('Lead_POS.LeadX', 'float')
+    log_conf.add_variable('Lead_POS.LeadY', 'float')
+    log_conf.add_variable('Lead_POS.LeadYaw', 'float')
 
     scf.cf.log.add_config(log_conf)
     log_conf.data_received_cb.add_callback(lambda t, d, l: position_callback(scf.cf.link_uri, t, d, l))
